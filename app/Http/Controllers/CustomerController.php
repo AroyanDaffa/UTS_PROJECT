@@ -10,7 +10,12 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-        return view('customers.index', compact('customers'));
+        return view('dashboard.customers.index', compact('customers'));
+    }
+
+    public function create()
+    {
+        return view('dashboard.customers.create');
     }
 
     public function store(Request $request)
@@ -18,18 +23,18 @@ class CustomerController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:customers',
-            'orders' => 'required|integer',
+            'orders' => 'nullable|integer', 
             'last_order' => 'nullable|date',
         ]);
 
         Customer::create($request->all());
 
-        return redirect()->route('customers.index')->with('success', 'Pelanggan berhasil ditambahkan.');
+        return redirect()->route('customers.index')->with('success', 'Customer successfully created.');
     }
 
     public function edit(Customer $customer)
     {
-        return view('customers.edit', compact('customer'));
+        return view('dashboard.customers.edit', compact('customer'));
     }
 
     public function update(Request $request, Customer $customer)
@@ -43,13 +48,13 @@ class CustomerController extends Controller
 
         $customer->update($request->all());
 
-        return redirect()->route('customers.index')->with('success', 'Pelanggan berhasil diperbarui.');
+        return redirect()->route('customers.index')->with('success', 'Customer successfully updated.');
     }
 
     public function destroy(Customer $customer)
     {
         $customer->delete();
 
-        return redirect()->route('customers.index')->with('success', 'Pelanggan berhasil dihapus.');
+        return redirect()->route('customers.index')->with('success', 'Customer successfully deleted.');
     }
 }

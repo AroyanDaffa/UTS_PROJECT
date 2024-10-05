@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
+
 <body>
     <section id="menu">
         <div class="logo">
@@ -16,7 +18,7 @@
         <div class="items">
             <li><i class='bx bxs-dashboard'></i><a href="{{ url('/dashboard') }}">Dashboard</a></li>
             <li><i class='bx bxs-category-alt'></i><a href="{{ url('/category') }}">Category</a></li>
-            <li><i class='bx bxl-product-hunt'></i><a href="{{ url('/product') }}">Product</a></li>
+            <li><i class='bx bxl-product-hunt'></i><a href="{{ url('/products') }}">Product</a></li>
             <li><i class='bx bxs-user-rectangle'></i><a href="{{ url('/customers') }}">Customers</a></li>
             <li><i class='bx bxs-cart'></i><a href="{{ url('/supplier') }}">Supplier</a></li>
             <li><i class='bx bxs-package'></i><a href="{{ url('/orders') }}">Orders</a></li>
@@ -37,57 +39,54 @@
             </div>
         </header>
 
-        <h1>Supplier Management</h1>
-        <form action="#" method="POST" class="mb-4">
-            <div class="mb-3">
-                <label for="supplierName" class="form-label">Supplier Name</label>
-                <input type="text" class="form-control" id="supplierName" placeholder="Enter Supplier Name">
-            </div>
-            <div class="mb-3">
-                <label for="supplierEmail" class="form-label">Supplier Email</label>
-                <input type="email" class="form-control" id="supplierEmail" placeholder="Enter Supplier Email">
-            </div>
-            <div class="mb-3">
-                <label for="supplierPhone" class="form-label">Supplier Phone</label>
-                <input type="text" class="form-control" id="supplierPhone" placeholder="Enter Supplier Phone">
-            </div>
-            <button type="submit" class="btn btn-primary">Add Supplier</button>
-        </form>
+        <div class="container">
+            <h1>Supplier Management</h1>
+            <form action="{{ route('supplier.store') }}" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <label for="supplier_name" class="form-label">Supplier Name</label>
+                    <input type="text" class="form-control" id="supplier_name" name="supplier_name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="supplier_email" class="form-label">Supplier Email</label>
+                    <input type="email" class="form-control" id="supplier_email" name="supplier_email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="supplier_phone" class="form-label">Supplier Phone</label>
+                    <input type="text" class="form-control" id="supplier_phone" name="supplier_phone" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Supplier</button>
+            </form>
 
-        <!-- Table to display suppliers -->
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Supplier ID</th>
-                    <th>Supplier Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>ABC Supplies</td>
-                    <td>abc@example.com</td>
-                    <td>123-456-7890</td>
-                    <td>
-                        <button class="btn btn-warning">Edit</button>
-                        <button class="btn btn-danger">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>XYZ Logistics</td>
-                    <td>xyz@example.com</td>
-                    <td>987-654-3210</td>
-                    <td>
-                        <button class="btn btn-warning">Edit</button>
-                        <button class="btn btn-danger">Delete</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+
+            <h2 class="mt-4">Supplier List</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($suppliers as $supplier)
+                    <tr>
+                        <td>{{ $supplier->id }}</td>
+                        <td>{{ $supplier->name }}</td>
+                        <td>{{ $supplier->email }}</td>
+                        <td>{{ $supplier->phone }}</td>
+                        <td>
+                            <a href="#" class="btn btn-warning">Edit</a>
+                            <a href="#" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </section>
 </body>
+
 </html>

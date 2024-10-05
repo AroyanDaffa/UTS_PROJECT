@@ -18,7 +18,7 @@
         <div class="items">
             <li><i class='bx bxs-dashboard'></i><a href="{{ url('/dashboard') }}">Dashboard</a></li>
             <li><i class='bx bxs-category-alt'></i><a href="{{ url('/category') }}">Category</a></li>
-            <li><i class='bx bxl-product-hunt'></i><a href="{{ url('/product') }}">Product</a></li>
+            <li><i class='bx bxl-product-hunt'></i><a href="{{ url('/products') }}">Product</a></li>
             <li><i class='bx bxs-user-rectangle'></i><a href="{{ url('/customers') }}">Customers</a></li>
             <li><i class='bx bxs-cart'></i><a href="{{ url('/supplier') }}">Supplier</a></li>
             <li><i class='bx bxs-package'></i><a href="{{ url('/orders') }}">Orders</a></li>
