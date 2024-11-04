@@ -30,7 +30,7 @@
                 <td>{{ $shipping->address }}</td>
                 <td>
                     <a href="{{ route('shippings.show', $shipping->id) }}" class="btn btn-info">View</a>
-                    <a href="{{ route('shippings.edit', $shipping->id) }}" class="btn btn-warning">Update Status</a>
+                    <a href="{{ route('shipping.edit', $shipping->id) }}">Edit</a>
                     <form action="{{ route('shippings.destroy', $shipping->id) }}" method="POST" style="display:inline-block;">
                         @csrf
                         @method('DELETE')

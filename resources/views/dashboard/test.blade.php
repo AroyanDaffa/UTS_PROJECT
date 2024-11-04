@@ -21,7 +21,6 @@
               <li><a href="#aboutus">about</a></li>
               <li><a href="#services">services</a></li>
               <li><a href="#footer">contact</a></li>
-              <li><a href="{{ url('/dashboard') }}">Admin</a></li>
           </ul>
 
           <div class="nav_btns">

@@ -1,0 +1,85 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+/* Product Cards */
+.card {
+    border: none;
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px; /* Add padding inside the box */
+    margin-bottom: 20px; /* Add margin between the cards */
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-img-top {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #001f3f; /* Navy Blue */
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #004080;
+}
+
+/* Tracking Form */
+.tracking-form input {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.tracking-form button {
+    margin-top: 10px;
+}
+
+.tracking-result {
+    margin-top: 20px;
+}
+
+.tracking-result .card {
+    margin-top: 20px;
+}
+
+/* Tracking Button Styles */
+.btn-secondary {
+    background-color: #004080; /* Navy Blue Color */
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #002f5f; /* Darker Navy on Hover */
+    transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+.btn-secondary:active {
+    background-color: #001f3f; /* Even darker on click */
+    transform: scale(0.98); /* Slight shrinking effect on click */
+}

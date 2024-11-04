@@ -17,6 +17,7 @@ class CreateShippingsTable extends Migration
             $table->id();  // Order ID (primary key)
             $table->string('customer_name');  // Nama pelanggan
             $table->string('shipping_status');  // Status pengiriman (contoh: In Transit, Delivered, etc.)
+            $table->string('shipping_current_location'); // shipping_current_location
             $table->string('address');  // Alamat pengiriman
             $table->timestamps();  // Timestamps untuk created_at dan updated_at
         });
