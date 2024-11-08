@@ -29,14 +29,14 @@ class ShippingController extends Controller
     {
         return view('shippings.show', compact('shipping'));
     }
-    
+
     public function edit(Shipping $shipping)
-{
-    // Jika Anda ingin mendapatkan semua data Shipping, bisa dilakukan seperti ini
-    $shippings = Shipping::all();
-    
-    return view('shippings.edit', compact('shipping', 'shippings'));
-}
+    {
+        // Jika Anda ingin mendapatkan semua data Shipping, bisa dilakukan seperti ini
+        $shippings = Shipping::all();
+
+        return view('shippings.edit', compact('shipping', 'shippings'));
+    }
 
     public function update(Request $request, Shipping $shipping)
     {

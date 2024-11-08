@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TrackingController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Support\Facades\Auth;
@@ -26,22 +27,48 @@ Route::middleware(Authenticate::class)->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-/**
- * User Routes
- */
 Route::get('/', function () {
     return view('frontend/index');
 });
 
+/**
+ * User Routes
+ */
+Route::middleware(Authenticate::class)->group(function () {
+    /**
+     * View Routes
+     */
+    Route::get('/dashboard-user', function () {
+        return view('user.user');
+    })->name('user.dashboard');
+
+    Route::get('/tracking', function () {
+        return view('user.tracking');
+    })->name('user.tracking');
+
+    /**
+     * CRUD Routes
+     */
+    Route::post('/tracking', [TrackingController::class, 'getMyOrder'])->name('user.tracking.order');
+});
 
 /**
  * Admin Routes
  */
 Route::middleware([Authenticate::class, IsAdmin::class])->group(function () {
+    /**
+     * View Routes
+     */
     Route::get('/dashboard', function () {
         return view('dashboard.dashboard');
     })->name('dashboard');
 
+    Route::get('/reports', function () {
+        return view('dashboard.reports');
+    });
+    /**
+     * CRUD Routes
+     */
     Route::resource('category', CategoryController::class);
     Route::resource('products', ProductController::class);
     Route::resource('customers', CustomerController::class);
@@ -52,20 +79,4 @@ Route::middleware([Authenticate::class, IsAdmin::class])->group(function () {
     Route::resource('shippings', ShippingController::class);
 
     Route::get('/shippings/{shipping}/edit', [ShippingController::class, 'edit'])->name('shippings.edit');
-
-    Route::get('/reports', function () {
-        return view('dashboard/reports');
-    });
-});
-
-Route::get('/dashboard-user', function () {
-    return view('user.user');
-})->middleware('auth')->name('user.dashboard');
-
-Route::get('/user', function () {
-    return view('user/user');
-});
-
-Route::get('/tracking', function () {
-    return view('user/tracking');
 });

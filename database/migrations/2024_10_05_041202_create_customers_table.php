@@ -15,11 +15,19 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();  // ID Pelanggan
-            $table->string('name');  // Nama Pelanggan
-            $table->string('email')->unique();  // Email Pelanggan
+            /**
+             * Disabled, changing to User ID instead for minimizing redundant data
+             */
+            // $table->string('name');  // Nama Pelanggan
+            // $table->string('email')->unique();  // Email Pelanggan
             $table->integer('orders')->default(0);  // Jumlah Pesanan
             $table->date('last_order')->nullable();  // Tanggal Pesanan Terakhir
             $table->timestamps();
+
+            /**
+             * Added Section
+             */
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
         });
     }
 
@@ -33,4 +41,3 @@ class CreateCustomersTable extends Migration
         Schema::dropIfExists('customers');
     }
 }
-
