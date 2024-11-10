@@ -28,6 +28,8 @@ class CreateCustomersTable extends Migration
              * Added Section
              */
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('customer_name');
+            $table->string('customer_email')->unique();
         });
     }
 

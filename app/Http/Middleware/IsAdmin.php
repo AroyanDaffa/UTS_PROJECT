@@ -19,7 +19,7 @@ class IsAdmin
         /**
          * Check is admin value inside user field
          */
-        if (Auth::check() && Auth::user()->is_admin) {
+        if (Auth::check() && !Auth::user()->is_admin) {
             return redirect()->route('user.dashboard');
         }
         return $next($request);

@@ -14,5 +14,8 @@ class Order extends Model
         'customer_id',
         'total',
         'date',
+        'product_id',
+        'product_name',
+        'destination_address'
     ];
 }

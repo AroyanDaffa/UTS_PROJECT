@@ -49,7 +49,8 @@ Route::middleware(Authenticate::class)->group(function () {
     /**
      * CRUD Routes
      */
-    Route::post('/tracking', [TrackingController::class, 'getMyOrder'])->name('user.tracking.order');
+    Route::post('/customer/tracking', [TrackingController::class, 'getMyOrder'])->name('customer.track.order');
+    Route::post('/customer/order', [OrderController::class, 'newOrderByCustomer'])->name('customer.new.order');
 });
 
 /**
@@ -66,17 +67,16 @@ Route::middleware([Authenticate::class, IsAdmin::class])->group(function () {
     Route::get('/reports', function () {
         return view('dashboard.reports');
     });
+
     /**
      * CRUD Routes
      */
-    Route::resource('category', CategoryController::class);
-    Route::resource('products', ProductController::class);
-    Route::resource('customers', CustomerController::class);
-    Route::resource('supplier', SupplierController::class);
-    Route::resource('orders', OrderController::class);
-    Route::resource('shippings', ShippingController::class);
-
-    Route::resource('shippings', ShippingController::class);
-
-    Route::get('/shippings/{shipping}/edit', [ShippingController::class, 'edit'])->name('shippings.edit');
+    Route::resources([
+        'category' => CategoryController::class,
+        'products' => ProductController::class,
+        'customers' => CustomerController::class,
+        'suppliers' => SupplierController::class,
+        'orders' => OrderController::class,
+        'shippings' => ShippingController::class,
+    ]);
 });

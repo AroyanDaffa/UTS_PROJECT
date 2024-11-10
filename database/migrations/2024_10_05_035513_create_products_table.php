@@ -19,6 +19,7 @@ return new class extends Migration
              * Added Section
              */
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->string('category_name');
         });
     }
 
