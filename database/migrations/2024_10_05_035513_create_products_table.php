@@ -12,9 +12,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('price', 10, 2);
-            $table->string('category');
             $table->integer('stock');
             $table->timestamps();
+
+            /**
+             * Added Section
+             */
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->string('category_name');
         });
     }
 

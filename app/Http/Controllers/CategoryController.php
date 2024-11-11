@@ -40,7 +40,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
 
         // Tampilkan view edit dengan data kategori
-        return view('dashboard.edit_category', compact('category'));
+        return view('category.edit_category', compact('category'));
     }
 
     // Memperbarui data kategori

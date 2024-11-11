@@ -66,7 +66,7 @@
                         <td>{{ $customer->id }}</td>
                         <td>{{ $customer->name }}</td>
                         <td>{{ $customer->email }}</td>
-                        <td>{{ $customer->orders->count() }}</td>
+                        <td>{{ $customer->orders }}</td>
                         <td>{{ optional($customer->lastOrder)->created_at ?? 'No orders' }}</td>
 
                         <td>

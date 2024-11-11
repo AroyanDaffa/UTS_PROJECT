@@ -2,8 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResiHelper;
+use App\Models\Customer;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\Shipping;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -16,13 +24,39 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'customer_name' => 'required',
-            'status' => 'required',
+            'customer_id' => 'required|integer',
             'total' => 'required|numeric',
-            'date' => 'required|date',
+            'product_id' => 'required|integer',
+            'destination_address' => 'required|string',
         ]);
 
-        Order::create($request->all());
+        $customer = Customer::where('id', $request['customer_id'])->firstOrFail();
+        $userId = $customer->user_id;
+        $product = Product::where('id', $request['product_id'])->firstOrFail();
+
+
+        $order = Order::create([
+            'user_id' => $userId,
+            'customer_id' => $customer->id,
+            'total' => $request->total,
+            'date' => Date::now(),
+            'product_id' => $product->id,
+            'product_name' => $product->name,
+            'destination_address' => $request->destination_address
+        ]);
+
+        $noResi = ResiHelper::generateResiNumber();
+        while (Shipping::where('no_resi', $noResi)->exists()) {
+            $noResi = ResiHelper::generateResiNumber();
+        }
+        Shipping::create([
+            'order_id' => $order->id,
+            'shipping_status' => 'In-Process',
+            'shipping_current_location' => 'Surabaya',
+            'address' => $order->destination_address,
+            'no_resi' => $noResi
+        ]);
+
 
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil ditambahkan.');
     }
@@ -41,13 +75,32 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $request->validate([
-            'customer_name' => 'required',
-            'status' => 'required',
+            'customer_id' => 'required|integer',
             'total' => 'required|numeric',
-            'date' => 'required|date',
+            'product_id' => 'required|integer',
+            'destination_address' => 'required|string', // Added to match store validation
         ]);
 
-        $order->update($request->all());
+        $customer = Customer::where('id', $request['customer_id'])->firstOrFail();
+        $userId = $customer->user_id;
+        $product = Product::where('id', $request['product_id'])->firstOrFail();
+
+        $order->update([
+            'user_id' => $userId,
+            'customer_id' => $customer->id,
+            'total' => $request->total,
+            'date' => Date::now(),
+            'product_id' => $product->id,
+            'product_name' => $product->name,
+            'destination_address' => $request->destination_address // Added to match store fields
+        ]);
+
+        // Update the associated shipping address if it exists
+        if ($order->shipping) {
+            $order->shipping->update([
+                'address' => $request->destination_address
+            ]);
+        }
 
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil diperbarui.');
     }
@@ -57,5 +110,63 @@ class OrderController extends Controller
         $order->delete();
 
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dihapus.');
+    }
+
+    public function newOrderByCustomer(Request $request)
+    {
+        $request->validate([
+            'total' => 'required|numeric',
+            'product_id' => 'required|integer',
+            'destination_address' => 'required|string',
+        ]);
+
+        $userId = Auth::id();
+        Log::info($userId);
+        $customer = Customer::where('user_id', $userId)->firstOrFail();
+        $userId = $customer->user_id;
+        $product = Product::where('id', $request['product_id'])->firstOrFail();
+
+        $order = Order::create([
+            'user_id' => $userId,
+            'customer_id' => $customer->id,
+            'total' => $request->total,
+            'date' => Date::now(),
+            'product_id' => $product->id,
+            'product_name' => $product->name,
+            'destination_address' => $request->destination_address
+        ]);
+
+        $noResi = ResiHelper::generateResiNumber();
+        while (Shipping::where('no_resi', $noResi)->exists()) {
+            $noResi = ResiHelper::generateResiNumber();
+        }
+
+        Shipping::create([
+            'order_id' => $order->id,
+            'shipping_status' => 'In-Process',
+            'shipping_current_location' => 'Surabaya',
+            'address' => $order->destination_address,
+            'no_resi' => $noResi
+        ]);
+
+        return redirect()->route('orders.index')->with('success', 'Pesanan berhasil ditambahkan.');
+    }
+
+    public function getMyOrders()
+    {
+        $userId = Auth::id();
+
+        $myOrders = Order::where('user_id', $userId)->get();
+
+        foreach ($myOrders as $order) {
+            $shipping = Shipping::where('order_id', $order->id)->first();
+            $order->no_resi = $shipping;
+        }
+
+        return response()->json([
+            'message' => 'Success fetching',
+            'orders' => $myOrders
+        ]);
+        // Ganti redirect()->route(//customer.order.index page)->with(//messagenya apa)
     }
 }

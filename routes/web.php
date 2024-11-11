@@ -8,32 +8,77 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TrackingController;
+use App\Http\Middleware\IsAdmin;
+use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('frontend/index');
-});
-
+/**
+ * Global Routes
+ */
 Route::get('/signup', [AuthController::class, 'showSignupForm'])->name('signup');
 Route::post('/signup', [AuthController::class, 'signup']);
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::middleware(Authenticate::class)->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
 
-Route::middleware(['auth'])->group(function () {
+Route::get('/', function () {
+    return view('frontend/index');
+});
+
+/**
+ * User Routes
+ */
+Route::middleware(Authenticate::class)->group(function () {
+    /**
+     * View Routes
+     */
+    Route::get('/dashboard-user', function () {
+        return view('user.user');
+    })->name('user.dashboard');
+
+    Route::get('/tracking', function () {
+        return view('user.tracking');
+    })->name('user.tracking');
+
+    /**
+     * CRUD Routes, beberapa masih pake konsep return json, nanti kalau pagenya udah fix bisa diganti di fungsi controller terkait
+     */
+    Route::post('/customer/tracking', [TrackingController::class, 'trackOrder'])->name('customer.track.order');
+    Route::post('/customer/order', [OrderController::class, 'newOrderByCustomer'])->name('customer.new.order');
+    Route::get('/customer/orders/me', [OrderController::class, 'getMyOrders'])->name('customer.orders.me');
+    Route::get('/customer/products/available', [ProductController::class, 'indexForCustomer'])->name('customer.products.available');
+});
+
+/**
+ * Admin Routes
+ */
+Route::middleware([Authenticate::class, IsAdmin::class])->group(function () {
+    /**
+     * View Routes
+     */
     Route::get('/dashboard', function () {
         return view('dashboard.dashboard');
     })->name('dashboard');
 
-    Route::resource('category', CategoryController::class);
-    Route::resource('products', ProductController::class);
-    Route::resource('customers', CustomerController::class);
-    Route::resource('supplier', SupplierController::class);
-    Route::resource('orders', OrderController::class);
-    Route::resource('shippings', ShippingController::class);
-
     Route::get('/reports', function () {
-        return view('dashboard/reports');
+        return view('dashboard.reports');
     });
+
+    /**
+     * CRUD Routes
+     */
+    Route::resources([
+        'category' => CategoryController::class,
+        'products' => ProductController::class,
+        'customers' => CustomerController::class,
+        'suppliers' => SupplierController::class,
+        'orders' => OrderController::class,
+        'shippings' => ShippingController::class,
+    ]);
 });

@@ -56,7 +56,7 @@
                     <td>123 Main St, Jakarta</td>
                     <td>
                         <button class="btn btn-primary">View</button>
-                        <button class="btn btn-warning">Update Status</button>
+                        <a href="{{ route('shipping.edit', $shipping->id) }}">Edit</a>
                     </td>
                 </tr>
                 <tr>
