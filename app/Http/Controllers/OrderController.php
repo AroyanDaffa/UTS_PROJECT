@@ -151,4 +151,22 @@ class OrderController extends Controller
 
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil ditambahkan.');
     }
+
+    public function getMyOrders()
+    {
+        $userId = Auth::id();
+
+        $myOrders = Order::where('user_id', $userId)->get();
+
+        foreach ($myOrders as $order) {
+            $shipping = Shipping::where('order_id', $order->id)->first();
+            $order->no_resi = $shipping;
+        }
+
+        return response()->json([
+            'message' => 'Success fetching',
+            'orders' => $myOrders
+        ]);
+        // Ganti redirect()->route(//customer.order.index page)->with(//messagenya apa)
+    }
 }

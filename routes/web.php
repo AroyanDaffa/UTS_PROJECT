@@ -47,10 +47,12 @@ Route::middleware(Authenticate::class)->group(function () {
     })->name('user.tracking');
 
     /**
-     * CRUD Routes
+     * CRUD Routes, beberapa masih pake konsep return json, nanti kalau pagenya udah fix bisa diganti di fungsi controller terkait
      */
-    Route::post('/customer/tracking', [TrackingController::class, 'getMyOrder'])->name('customer.track.order');
+    Route::post('/customer/tracking', [TrackingController::class, 'trackOrder'])->name('customer.track.order');
     Route::post('/customer/order', [OrderController::class, 'newOrderByCustomer'])->name('customer.new.order');
+    Route::get('/customer/orders/me', [OrderController::class, 'getMyOrders'])->name('customer.orders.me');
+    Route::get('/customer/products/available', [ProductController::class, 'indexForCustomer'])->name('customer.products.available');
 });
 
 /**

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class TrackingController extends Controller
 {
-    public function getMyOrder(Request $request)
+    public function trackOrder(Request $request)
     {
         $request->validate([
             'no_resi' => 'required|string'
@@ -20,5 +20,7 @@ class TrackingController extends Controller
             'message' => 'Success get related package',
             'package' => $package
         ]);
+
+        // return view('user.tracking', compact('package'));
     }
 }
