@@ -39,7 +39,7 @@
             <h2 class="text-center">Track Your Order</h2>
             <div class="row justify-content-center mt-4">
                 <div class="col-md-6">
-                    <form action="/" method="GET" class="tracking-form">
+                    <form action="{{ route('customer.track.order')}}" method="POST" class="tracking-form">
                         <div class="mb-3">
                             <label for="trackingID" class="form-label">Enter Tracking Number</label>
                             <input type="text" id="trackingID" name="no_resi" class="form-control" required>
@@ -49,16 +49,15 @@
                 </div>
             </div>
 
-            @if($package)
+            @if(isset($package))
             <div class="tracking-result mt-5">
-                <!-- Order tracking information will be displayed here after form submission -->
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Order Status</h5>
                         <p><strong>Tracking ID:</strong> {{ $package->no_resi }}</p>
-                        <p><strong>Status:</strong> In Transit</p>
-                        <p><strong>Estimated Delivery:</strong> 2024-10-10</p>
-                        <p><strong>Location:</strong> Jakarta, Indonesia</p>
+                        <p><strong>Status:</strong> {{ $package->shipping_status}}</p>
+                        <p><strong>Location:</strong> {{ $package->shipping_current_location ?? 'N/A' }}</p>
+                        <p><strong>Destination:</strong> {{ $package->address ?? 'Unknown' }}</p>
                     </div>
                 </div>
             </div>

@@ -163,10 +163,13 @@ class OrderController extends Controller
             $order->no_resi = $shipping;
         }
 
-        return response()->json([
-            'message' => 'Success fetching',
-            'orders' => $myOrders
-        ]);
-        // Ganti redirect()->route(//customer.order.index page)->with(//messagenya apa)
+        // return response()->json([
+        //     'message' => 'Success fetching',
+        //     'orders' => $myOrders
+        // ]);
+
+        $orders = $myOrders;
+
+        return view('user.list', compact('orders'));
     }
 }
