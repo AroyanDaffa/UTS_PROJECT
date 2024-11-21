@@ -3,32 +3,30 @@
 @section('content')
 <div class="container">
     <h2>Add New Shipping</h2>
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <form action="{{ route('shippings.store') }}" method="POST">
         @csrf
+
         <div class="form-group">
-            <label for="customer_name">Customer Name</label>
-            <input type="text" name="customer_name" class="form-control" value="{{ old('customer_name') }}">
+            <label>Order ID</label>
+            <input type="number" name="order_id" class="form-control" required>
         </div>
+
         <div class="form-group">
-            <label for="shipping_status">Shipping Status</label>
-            <input type="text" name="shipping_status" class="form-control" value="{{ old('shipping_status') }}">
+            <label>Shipping Status</label>
+            <input type="text" name="shipping_status" class="form-control" required>
         </div>
+
         <div class="form-group">
-            <label for="address">Address</label>
-            <input type="text" name="address" class="form-control" value="{{ old('address') }}">
+            <label>Current Location</label>
+            <input type="text" name="shipping_current_location" class="form-control" required>
         </div>
-        <button type="submit" class="btn btn-primary">Add Shipping</button>
+
+        <div class="form-group">
+            <label>Address</label>
+            <input type="text" name="address" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Shipping</button>
     </form>
 </div>
 @endsection
