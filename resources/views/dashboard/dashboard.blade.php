@@ -23,7 +23,7 @@
             <li><i class='bx bxl-product-hunt'></i><a href="{{ url('/products') }}">Product</a></li>
             <li><i class='bx bxs-user-rectangle'></i><a href="{{ url('/customers') }}">Customers</a></li>
             <li><i class='bx bxs-package'></i><a href="{{ url('/orders') }}">Orders</a></li>
-            <li><i class='bx bxs-truck'></i><a href="{{ url('/shipping') }}">Shipping</a></li>
+            <li><i class='bx bxs-truck'></i><a href="{{ url('/shippings') }}">shippings</a></li>
             <li><i class='bx bxs-bar-chart-alt-2'></i><a href="{{ url('/reports') }}">Reports</a></li>
         </div>
     </section>
@@ -82,33 +82,25 @@
                 <tr>
                     <th>Order ID</th>
                     <th>Customer</th>
-                    <th>Status</th>
                     <th>Total</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
+                @forelse($recentOrders as $order)
                 <tr>
-                    <td>#1001</td>
-                    <td>John Doe</td>
-                    <td>Pending</td>
-                    <td>Rp. 500,000</td>
-                    <td><button class="btn btn-primary">View</button></td>
+                    <td>#{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}</td>
+                    <td>{{ $order->customer_name }}</td>
+                    <td>{{ number_format($order->total, 0, ',', '.') }}</td>
+                    <td>
+                        <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary btn-sm">View</a>
+                    </td>
                 </tr>
+                @empty
                 <tr>
-                    <td>#1002</td>
-                    <td>Jane Smith</td>
-                    <td>Shipped</td>
-                    <td>Rp. 750,000</td>
-                    <td><button class="btn btn-primary">View</button></td>
+                    <td colspan="5" class="text-center">No recent orders found</td>
                 </tr>
-                <tr>
-                    <td>#1003</td>
-                    <td>Michael Johnson</td>
-                    <td>Delivered</td>
-                    <td>Rp. 1,200,000</td>
-                    <td><button class="btn btn-primary">View</button></td>
-                </tr>
+                @endforelse
             </tbody>
         </table>
     </section>

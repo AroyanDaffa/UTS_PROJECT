@@ -18,4 +18,9 @@ class Order extends Model
         'product_name',
         'destination_address'
     ];
+    
+    public function customer()
+{
+    return $this->belongsTo(Customer::class);
+}
 }

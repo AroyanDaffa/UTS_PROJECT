@@ -24,6 +24,12 @@ class DashboardController extends Controller
             ->selectRaw('SUM(orders.total * products.price) as total_revenue')
             ->value('total_revenue');
 
+        $recentOrders = Order::join('customers', 'orders.customer_id', '=', 'customers.id')
+            ->select('orders.id', 'orders.total', 'customers.customer_name as customer_name')
+            ->latest('orders.created_at')
+            ->take(5)
+            ->get();
+
         return view('dashboard.dashboard', compact(
             'totalProducts',
             'totalCategories',
@@ -31,7 +37,8 @@ class DashboardController extends Controller
             'totalCustomers',
             'totalOrdersPending',
             'totalOrdersShipped',
-            'totalRevenue'
+            'totalRevenue',
+            'recentOrders'
         ));
     }
 }
