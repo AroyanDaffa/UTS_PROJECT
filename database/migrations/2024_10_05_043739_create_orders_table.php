@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
              * Disabled, using primary / foreign key as identifier instead
              */
             // $table->string('customer_name');  // Nama pelanggan
-            $table->decimal('total', 15, 2);  // Total pesanan (dalam format desimal) -- flag :: kenapa decimal ?
+            $table->unsignedInteger('total');  // Total pesanan in quantity (not total checkout)
             $table->date('date');  // Tanggal pesanan
             $table->timestamps();  // created_at dan updated_at
 

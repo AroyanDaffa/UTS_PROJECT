@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\AuthController;
@@ -45,7 +44,7 @@ Route::middleware(Authenticate::class)->group(function () {
     Route::get('/tracking', function () {
         return view('user.tracking');
     })->name('user.tracking');
-    
+
     Route::get('/mylist', [OrderController::class, 'getMyOrders'])->name('user.list');
 
     /**
@@ -64,9 +63,7 @@ Route::middleware([Authenticate::class, IsAdmin::class])->group(function () {
     /**
      * View Routes
      */
-    Route::get('/dashboard', function () {
-        return view('dashboard.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'countAllOnDashboard'])->name('dashboard');
 
     Route::get('/reports', function () {
         return view('dashboard.reports');
@@ -79,7 +76,6 @@ Route::middleware([Authenticate::class, IsAdmin::class])->group(function () {
         'category' => CategoryController::class,
         'products' => ProductController::class,
         'customers' => CustomerController::class,
-        'suppliers' => SupplierController::class,
         'orders' => OrderController::class,
         'shippings' => ShippingController::class,
     ]);
