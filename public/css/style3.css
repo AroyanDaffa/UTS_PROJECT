@@ -104,30 +104,42 @@ header {
 .user-profile {
     display: flex;
     align-items: center;
+    gap: 15px; /* Beri jarak antar elemen */
 }
 
 .user-profile img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: 10px;
 }
 
-.search {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    border: 1px solid #e5e7eb;
-    border-radius: 4px;
+.user-profile i {
+    font-size: 20px;
+    color: #333;
 }
 
-.search input {
+/* Logout Form Styling */
+.logout-form {
+    margin: 0;
+    padding: 0;
+}
+
+.btn-logout {
+    background-color: #f44336; /* Warna merah */
+    color: white;
     border: none;
-    outline: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
     font-size: 14px;
-    padding: 10px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.btn-logout:hover {
+    background-color: #d32f2f; /* Warna hover lebih gelap */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
 /* Dashboard Overview Section */
 .dashboard-overview {
     display: flex;

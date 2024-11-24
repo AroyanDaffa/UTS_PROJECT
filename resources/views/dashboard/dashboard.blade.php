@@ -46,16 +46,20 @@
     <!-- Main Content Section -->
     <section id="main-content">
         <!-- Header Section -->
-        <header>
-            <div class="search">
-                <i class='bx bx-search-alt-2'></i>
-                <input type="text" placeholder="Search">
-            </div>
-            <div class="user-profile">
-                <i class='bx bxs-bell'></i>&nbsp; &nbsp;
-                <img src="{{ asset('images/admin.png') }}" alt="User Profile">
-            </div>
-        </header>
+    <header>
+    <div class="search">
+        <i class='bx bx-search-alt-2'></i>
+        <input type="text" placeholder="Search">
+    </div>
+    <div class="user-profile">
+        <i class='bx bxs-bell'></i>
+        <img src="{{ asset('images/admin.png') }}" alt="User Profile">
+        <form method="POST" action="{{ route('logout') }}" class="logout-form">
+            @csrf
+            <button type="submit" class="btn-logout">Logout</button>
+        </form>
+    </div>
+    </header>
 
         <!-- Year Filter Section -->
         <div class="year-filter">

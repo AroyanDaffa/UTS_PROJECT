@@ -25,16 +25,20 @@
     </section>
 
     <section id="main-content">
-        <header>
-            <div class="search">
-                <i class='bx bx-search-alt-2'></i>
-                <input type="text" placeholder="Search">
-            </div>
-            <div class="user-profile">
-                <i class='bx bxs-bell'></i></i>&nbsp; &nbsp;
-                <img src="{{ asset('images/admin.png') }}" alt="User Profile">
-            </div>
-        </header>
+    <header>
+    <div class="search">
+        <i class='bx bx-search-alt-2'></i>
+        <input type="text" placeholder="Search">
+    </div>
+    <div class="user-profile">
+        <i class='bx bxs-bell'></i>
+        <img src="{{ asset('images/admin.png') }}" alt="User Profile">
+        <form method="POST" action="{{ route('logout') }}" class="logout-form">
+            @csrf
+            <button type="submit" class="btn-logout">Logout</button>
+        </form>
+    </div>
+    </header>
 
         <h1>Shipping Management</h1>
         <table class="table table-striped">
