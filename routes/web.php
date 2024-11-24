@@ -45,6 +45,8 @@ Route::middleware(Authenticate::class)->group(function () {
     Route::get('/tracking', function () {
         return view('user.tracking');
     })->name('user.tracking');
+    
+    Route::get('/mylist', [OrderController::class, 'getMyOrders'])->name('user.list');
 
     /**
      * CRUD Routes, beberapa masih pake konsep return json, nanti kalau pagenya udah fix bisa diganti di fungsi controller terkait

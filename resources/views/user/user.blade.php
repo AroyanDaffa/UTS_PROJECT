@@ -16,8 +16,9 @@
             <h2>PT.BERANDA</h2>
         </div>
         <div class="items">
-            <li><i class='bx bx-store-alt'></i></i><a href="{{ url('/user') }}">Our Product</a></li>
+            <li><i class='bx bx-store-alt'></i></i><a href="{{ url('/dashboard-user') }}">Our Product</a></li>
             <li><i class='bx bxs-truck'></i></i><a href="{{ url('/tracking') }}">Tracking</a></li>
+            <li><i class='bx bxs-truck'></i></i><a href="{{ url('/mylist') }}">My List</a></li>
         </div>
     </section>
 
