@@ -16,7 +16,7 @@
         </div>
         <div class="form-group">
             <label for="category">Category:</label>
-            <input type="text" class="form-control" name="category" value="{{ $product->category }}" required>
+            <input type="text" class="form-control" name="category_id" value="{{ $product->category_id }}" required>
         </div>
         <div class="form-group">
             <label for="stock">Stock:</label>

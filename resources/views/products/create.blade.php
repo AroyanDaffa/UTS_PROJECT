@@ -5,15 +5,15 @@
     <h2>Add New Product</h2>
 
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
     @endif
-    
+
     <!-- Form to add a new product -->
     <form method="POST" action="{{ route('products.store') }}">
         @csrf
@@ -29,7 +29,7 @@
 
         <div class="form-group">
             <label for="category">Category</label>
-            <input type="text" class="form-control" id="category" name="category" required>
+            <input type="text" class="form-control" id="category" name="category_id" required>
         </div>
 
         <div class="form-group">
