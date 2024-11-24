@@ -22,7 +22,6 @@
             <li><i class='bx bxs-category-alt'></i><a href="{{ url('/category') }}">Category</a></li>
             <li><i class='bx bxl-product-hunt'></i><a href="{{ url('/products') }}">Product</a></li>
             <li><i class='bx bxs-user-rectangle'></i><a href="{{ url('/customers') }}">Customers</a></li>
-            <li><i class='bx bxs-cart'></i><a href="{{ url('/supplier') }}">Supplier</a></li>
             <li><i class='bx bxs-package'></i><a href="{{ url('/orders') }}">Orders</a></li>
             <li><i class='bx bxs-truck'></i><a href="{{ url('/shipping') }}">Shipping</a></li>
             <li><i class='bx bxs-bar-chart-alt-2'></i><a href="{{ url('/reports') }}">Reports</a></li>
@@ -48,35 +47,31 @@
         <div class="dashboard-overview">
             <div class="overview-card">
                 <h3>Total Products</h3>
-                <p>1,234</p>
+                <p>{{ $totalProducts }}</p>
             </div>
             <div class="overview-card">
                 <h3>Total Orders</h3>
-                <p>3,456</p>
+                <p>{{ $totalOrders }}</p>
             </div>
             <div class="overview-card">
                 <h3>Pending Orders</h3>
-                <p>123</p>
+                <p>{{ $totalOrdersPending }}</p>
             </div>
             <div class="overview-card">
                 <h3>Shipped Orders</h3>
-                <p>3,333</p>
+                <p>{{ $totalOrdersShipped }}</p>
             </div>
             <div class="overview-card">
                 <h3>Categories</h3>
-                <p>12</p>
+                <p>{{ $totalCategories }}</p>
             </div>
             <div class="overview-card">
                 <h3>Customers</h3>
-                <p>456</p>
-            </div>
-            <div class="overview-card">
-                <h3>Suppliers</h3>
-                <p>34</p>
+                <p>{{ $totalCustomers }}</p>
             </div>
             <div class="overview-card">
                 <h3>Total Revenue</h3>
-                <p>Rp. 1.234.567</p>
+                <p>{{ $totalRevenue }}</p>
             </div>
         </div>
 

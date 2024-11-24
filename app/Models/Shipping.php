@@ -12,7 +12,7 @@ class Shipping extends Model
     protected $fillable = [
         'order_id',
         'no_resi',
-        'shipping_status',
+        'shipping_status', /* Pending, Shipped */
         'shipping_current_location',
         'address',
     ];
