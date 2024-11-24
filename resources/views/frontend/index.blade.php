@@ -32,8 +32,6 @@
           </div>
       </nav>
       <section class="main">
-        <!-- <video autoplay loop muted play-incline class="back-video"> <source src="Background.mp4" type="video/mp4">
-        </video> -->
          <div class="left">
          <h1>PT.BERANDA</h1>
          <p>"Menggerakkan bisnis Anda dengan solusi logistik yang cepat, andal, dan efisien, karena kesuksesan Anda adalah prioritas kami."

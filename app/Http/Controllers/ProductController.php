@@ -105,6 +105,6 @@ class ProductController extends Controller
     {
         $products = Product::all();
 
-        return response()->json($products);
+        return view('user.user', compact('products'));
     }
 }
