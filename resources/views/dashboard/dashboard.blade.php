@@ -88,20 +88,10 @@
 
             <!-- Top Products Section -->
             <div class="col-md-6 mb-4">
-                <h2>Top 5 Products</h2>
-                <table class="recent-orders" id="top-products-table">
-                    <thead>
-                        <tr>
-                            <th>Product ID</th>
-                            <th>Product Name</th>
-                            <th>Category</th>
-                            <th>Order Frequency</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Top products will be dynamically populated -->
-                    </tbody>
-                </table>
+                <div class="chart-container">
+                    <h2>Top 5 Products</h2>
+                    <canvas id="top-products-chart"></canvas>
+                </div>
             </div>
         </div>
     </section>
@@ -131,18 +121,62 @@
 
             // Update Top Products
             const productsForYear = topProducts[year];
-            topProductsTableBody.innerHTML = productsForYear.length > 0 ?
-                productsForYear.map(product => `
-                    <tr>
-                        <td>${product.sk_produk}</td>
-                        <td>${product.nama_produk}</td>
-                        <td>${product.nama_kategori}</td>
-                        <td>${product.order_frequencies}</td>
-                    </tr>
-                `).join('') :
-                `<tr><td colspan="4" class="text-center">No product data found</td></tr>`;
+            createTopProductsChart(productsForYear);
 
             createRevenueChart(year);
+        }
+
+        // Function to create Top Products Bar Chart
+        function createTopProductsChart(products) {
+            const productNames = products.map(product => product.nama_produk);
+            const orderFrequencies = products.map(product => product.order_frequencies);
+
+            const chartData = {
+                labels: productNames,
+                datasets: [{
+                    label: 'Order Frequency',
+                    data: orderFrequencies,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            // Destroy existing chart if it exists
+            if (window.topProductsChart instanceof Chart) {
+                window.topProductsChart.destroy();
+            }
+
+            // Create new bar chart
+            const ctx = document.getElementById('top-products-chart').getContext('2d');
+            window.topProductsChart = new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Top 5 Products by Order Frequency'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.raw + ' orders';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         // Function to create revenue chart
