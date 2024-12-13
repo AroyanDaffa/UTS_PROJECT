@@ -20,7 +20,7 @@
         <div class="items">
         <li><i class='bx bx-store-alt'></i></i><a href="{{ url('/dashboard-user') }}">Our Product</a></li>
             <li><i class='bx bxs-truck'></i></i><a href="{{ url('/tracking') }}">Tracking</a></li>
-            <li><i class='bx bxs-truck'></i></i><a href="{{ url('/mylist') }}">My List</a></li>
+            <li><i class='bx bxs-package'></i></i><a href="{{ url('/mylist') }}">My Order</a></li>
         </div>
     </section>
 

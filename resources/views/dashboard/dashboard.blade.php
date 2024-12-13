@@ -38,8 +38,8 @@
             <li><i class='bx bxl-product-hunt'></i><a href="{{ url('/products') }}">Product</a></li>
             <li><i class='bx bxs-user-rectangle'></i><a href="{{ url('/customers') }}">Customers</a></li>
             <li><i class='bx bxs-package'></i><a href="{{ url('/orders') }}">Orders</a></li>
-            <li><i class='bx bxs-truck'></i><a href="{{ url('/shippings') }}">Shippings</a></li>
-            <li><i class='bx bxs-bar-chart-alt-2'></i><a href="{{ url('/reports') }}">Reports</a></li>
+            <li><i class='bx bxs-truck'></i><a href="{{ url('/shippings') }}">Shipping</a></li> <!-- Diperbaiki -->
+            <!-- <li><i class='bx bxs-bar-chart-alt-2'></i><a href="{{ url('/reports') }}">Reports</a></li> -->
         </div>
     </section>
 

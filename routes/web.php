@@ -34,6 +34,8 @@ Route::get('/', function () {
     return view('frontend/index');
 });
 
+Route::get('/dashboard-user', [ProductController::class, 'indexUser'])->name('user.dashboard');
+
 /**
  * User Routes
  */
@@ -41,15 +43,16 @@ Route::middleware(Authenticate::class)->group(function () {
     /**
      * View Routes
      */
-    Route::get('/dashboard-user', function () {
-        return view('user.user');
-    })->name('user.dashboard');
+    // Route::get('/dashboard-user', function () {
+    //     return view('user.user');
+    // })->name('user.dashboard');
 
     Route::get('/tracking', function () {
         return view('user.tracking');
     })->name('user.tracking');
 
     Route::get('/mylist', [OrderController::class, 'getMyOrders'])->name('user.list');
+
 
     /**
      * CRUD Routes, beberapa masih pake konsep return json, nanti kalau pagenya udah fix bisa diganti di fungsi controller terkait

@@ -17,6 +17,12 @@ class ProductController extends Controller
         return view('dashboard.products.index', compact('products'));
     }
 
+    public function indexUser()
+    {
+        $products = Product::all();
+        return view('user.user', compact('products'));
+    }
+
     // Show the form for creating a new product.
     public function create()
     {
@@ -64,6 +70,8 @@ class ProductController extends Controller
         return view('products.edit', compact('product'));
     }
 
+    
+
     // Update the specified product in storage.
     public function update(Request $request, $id)
     {
@@ -107,4 +115,6 @@ class ProductController extends Controller
 
         return view('user.user', compact('products'));
     }
+
+
 }
