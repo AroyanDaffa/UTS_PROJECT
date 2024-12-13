@@ -8,6 +8,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OLAPController;
 use App\Http\Controllers\TrackingController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Auth\Middleware\Authenticate;
@@ -21,6 +22,9 @@ Route::post('/signup', [AuthController::class, 'signup']);
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
+
+//TODO: remove
+// Route::get('/olap', [OLAPController::class, 'dashboardData']);
 
 Route::middleware(Authenticate::class)->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -63,7 +67,7 @@ Route::middleware([Authenticate::class, IsAdmin::class])->group(function () {
     /**
      * View Routes
      */
-    Route::get('/dashboard', [DashboardController::class, 'countAllOnDashboard'])->name('dashboard');
+    Route::get('/dashboard', [OLAPController::class, 'dashboardData'])->name('dashboard');
 
     Route::get('/reports', function () {
         return view('dashboard.reports');
