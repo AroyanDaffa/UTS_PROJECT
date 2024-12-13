@@ -56,6 +56,7 @@ class OLAPController extends Controller
 
         $salesRevenue = [];
         $topProducts = [];
+        $salesRevenueSecondary = [];
 
         foreach ($years as $year) {
             $yearlyRevenue = DB::connection($this->connection)
@@ -77,16 +78,75 @@ class OLAPController extends Controller
                 ->get();
 
             $topProducts[$year] = $yearlyTopProducts;
+
+            $monthlyRevenue = [];
+
+            for ($month = 1; $month <= 12; $month++) {
+                // Pad the month with leading zero to match the date format in sk_waktu
+                $monthStr = str_pad($month, 2, '0', STR_PAD_LEFT);
+
+                $monthlyRevenueValue = DB::connection($this->connection)
+                    ->table('fakta_penjualan')
+                    ->whereRaw('LEFT(sk_waktu, 4) = ? AND LEFT(RIGHT(sk_waktu, 4), 2) = ?', [$year, $monthStr])
+                    ->selectRaw('SUM(total * price) as total_revenue')
+                    ->value('total_revenue');
+
+                $monthlyRevenue[$monthStr] = $monthlyRevenueValue ?: 0;
+            }
+
+            $salesRevenueSecondary[$year] = $monthlyRevenue;
         }
 
         return view('dashboard.dashboard', compact(
             'years',
             'salesRevenue',
             'topProducts',
+            'salesRevenueSecondary',
             //Jumlah Stock => faktapenjualan -> diambil setiap product stocknya (ga boleh double) dijumlahin 
             //TODO:
             //Top 5 Kota =>  faktashipping count sk_destinasi / tujuan sama terus diorder by
         ));
         // return response()->json($topProducts);
+    }
+
+    public function getData()
+    {
+        $years = $this->years;
+
+        $salesRevenue = [];
+        $topProducts = [];
+
+        foreach ($years as $year) {
+            $monthlyRevenue = [];
+
+            for ($month = 1; $month <= 12; $month++) {
+                // Pad the month with leading zero to match the date format in sk_waktu
+                $monthStr = str_pad($month, 2, '0', STR_PAD_LEFT);
+
+                $monthlyRevenueValue = DB::connection($this->connection)
+                    ->table('fakta_penjualan')
+                    ->whereRaw('LEFT(sk_waktu, 4) = ? AND LEFT(RIGHT(sk_waktu, 4), 2) = ?', [$year, $monthStr])
+                    ->selectRaw('SUM(total * price) as total_revenue')
+                    ->value('total_revenue');
+
+                $monthlyRevenue[$monthStr] = $monthlyRevenueValue ?: 0;
+            }
+
+            $salesRevenue[$year] = $monthlyRevenue;
+
+            $yearlyTopProducts = DB::connection($this->connection)
+                ->table('fakta_penjualan')
+                ->whereRaw('LEFT(sk_waktu, 4) = ?', [$year])
+                ->join('dim_products', 'fakta_penjualan.sk_produk', '=', 'dim_products.sk_produk')
+                ->select('dim_products.sk_produk', 'dim_products.nama_produk', 'dim_products.nama_kategori', DB::raw('SUM(fakta_penjualan.total) as order_frequencies'))
+                ->groupBy('dim_products.sk_produk', 'dim_products.nama_produk', 'dim_products.nama_kategori')
+                ->orderByDesc('order_frequencies')
+                ->limit(5)
+                ->get();
+
+            $topProducts[$year] = $yearlyTopProducts;
+        }
+
+        return response()->json($salesRevenue);
     }
 }

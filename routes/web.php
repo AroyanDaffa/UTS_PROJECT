@@ -24,7 +24,7 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 //TODO: remove
-// Route::get('/olap', [OLAPController::class, 'dashboardData']);
+Route::get('/olap', [OLAPController::class, 'getData']);
 
 Route::middleware(Authenticate::class)->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

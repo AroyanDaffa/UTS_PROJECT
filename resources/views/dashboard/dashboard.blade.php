@@ -25,6 +25,7 @@
 
 <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Sidebar Menu Section -->
     <section id="menu">
@@ -76,29 +77,46 @@
                 <p id="revenue-value">0</p>
             </div>
         </div>
+        <div class="row">
+            <!-- Monthly Revenue Trend Section -->
+            <div class="col-md-6 mb-4">
+                <div class="chart-container">
+                    <h2>Monthly Revenue Trend</h2>
+                    <canvas id="revenue-chart"></canvas>
+                </div>
+            </div>
 
-        <!-- Top Products Section -->
-        <h2>Top 5 Products</h2>
-        <table class="recent-orders" id="top-products-table">
-            <thead>
-                <tr>
-                    <th>Product ID</th>
-                    <th>Product Name</th>
-                    <th>Category</th>
-                    <th>Order Frequency</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Top products will be dynamically populated -->
-            </tbody>
-        </table>
+            <!-- Top Products Section -->
+            <div class="col-md-6 mb-4">
+                <h2>Top 5 Products</h2>
+                <table class="recent-orders" id="top-products-table">
+                    <thead>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Order Frequency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Top products will be dynamically populated -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </section>
 
     <script>
+        console.log(@JSON($salesRevenue));
+        console.log(@JSON($topProducts));
+        console.log(@JSON($years));
+        console.log(@JSON($salesRevenueSecondary));
+
         // Predefined data from the backend
         const salesRevenue = @json($salesRevenue);
         const topProducts = @json($topProducts);
         const years = @json($years);
+        const salesRevenueSecondary = @json($salesRevenueSecondary);
 
         // Get references to DOM elements
         const yearSelect = document.getElementById('year-select');
@@ -123,6 +141,71 @@
                     </tr>
                 `).join('') :
                 `<tr><td colspan="4" class="text-center">No product data found</td></tr>`;
+
+            createRevenueChart(year);
+        }
+
+        // Function to create revenue chart
+        function createRevenueChart(year) {
+            const monthNames = [
+                'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+            ];
+
+            // Prepare chart data
+            const monthlyData = salesRevenueSecondary[year];
+            const chartData = {
+                labels: monthNames,
+                datasets: [{
+                    label: `Revenue ${year}`,
+                    data: monthNames.map((_, index) => {
+                        const monthKey = String(index + 1).padStart(2, '0');
+                        return parseFloat(monthlyData[monthKey] || 0);
+                    }),
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1,
+                    fill: false
+                }]
+            };
+
+            // Destroy existing chart if it exists
+            if (window.revenueChart instanceof Chart) {
+                window.revenueChart.destroy();
+            }
+
+            // Create new chart
+            const ctx = document.getElementById('revenue-chart').getContext('2d');
+            window.revenueChart = new Chart(ctx, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `Monthly Revenue - ${year}`
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let value = context.parsed.y;
+                                    return 'Rp. ' + new Intl.NumberFormat('id-ID').format(value);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'Rp. ' + new Intl.NumberFormat('id-ID').format(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         // Initial setup with the first year
@@ -135,6 +218,31 @@
             updateDashboard(e.target.value);
         });
     </script>
+    <style>
+        .chart-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .recent-orders {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .recent-orders th,
+        .recent-orders td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .recent-orders th {
+            background-color: #f8f9fa;
+        }
+    </style>
 </body>
 
 </html>
