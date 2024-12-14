@@ -32,67 +32,62 @@
     <!-- Main Content Section -->
     <section id="main-content">
         <!-- Header Section -->
-    <header>
+        <header>
 
-    <div class="search">
-        <i class='bx bx-search-alt-2'></i>
-        <input type="text" placeholder="Search">
-    </div>
+            <div class="search">
+                <i class='bx bx-search-alt-2'></i>
+                <input type="text" placeholder="Search">
+            </div>
 
-    <div class="user-profile">
-        <i class='bx bxs-bell'></i>
-        <img src="{{ asset('images/admin.png') }}" alt="User Profile">
-        <form method="POST" action="{{ route('logout') }}" class="logout-form">
-            @csrf
-            <button type="submit" class="btn-logout">Logout</button>
-        </form>
-    </div>
-    </header>
+            <div class="user-profile">
+                <i class='bx bxs-bell'></i>
+                <img src="{{ asset('images/admin.png') }}" alt="User Profile">
+                <form method="POST" action="{{ route('logout') }}" class="logout-form">
+                    @csrf
+                    <button type="submit" class="btn-logout">Logout</button>
+                </form>
+            </div>
+        </header>
 
         <!-- Dashboard Overview Section -->
-    <div class="dashboard-overview">
-    <h1>Welcome, Admin</h1>
-    
-    <!-- Year Filter Section -->
-    <div class="year-filter">
-        <label for="year-select">Select Year:</label>
-        <select id="year-select">
-            @foreach($years as $year)
-                <option value="{{ $year }}">
-                    {{ $year }}
-                </option>
-            @endforeach
-        </select>
-    </div>
+        <div class="dashboard-overview">
+            <h1>Welcome, Admin</h1>
 
-    <!-- Overview Cards Section -->
-    <div class="overview-cards">
-        <div class="overview-card">
-        <i class='bx bx-money-withdraw' ></i>
-            <h3>Total Revenue</h3>
-            <p id="revenue-value">0</p>
-        </div>
-        <div class="overview-card">
-        <i class='bx bxs-group' ></i>
-            <h3>Total Customer</h3>
-            <p>{{ $customerCount }}</p>
-        </div>
-        <div class="overview-card">
-        <i class='bx bxs-basket'></i>
-            <h3>Total Products</h3>
-            <p>{{ $productsCount }}</p>
-        </div>
-        <div class="overview-card">
-        <i class='bx bx-current-location'></i>
-            <h3>Total Location</h3>
-            <p>{{ $locationCount }}</p>
-        </div>
-        
-    </div>
-</div>
+            <!-- Year Filter Section -->
+            <div class="year-filter">
+                <label for="year-select">Select Year:</label>
+                <select id="year-select">
+                    @foreach($years as $year)
+                    <option value="{{ $year }}">
+                        {{ $year }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
 
-       
-         
+            <!-- Overview Cards Section -->
+            <div class="overview-cards">
+                <div class="overview-card">
+                    <i class='bx bx-money-withdraw'></i>
+                    <h3>Total Revenue</h3>
+                    <p id="revenue-value">0</p>
+                    <p id="growth-value" style="font-size: 0.9rem; color: #555;">Growth: 0%</p>
+                </div>
+                <div class="overview-card">
+                    <i class='bx bx-money-withdraw'></i>
+                    <h3>Total Stocks</h3>
+                    <p id="stock-value">0</p>
+                </div>
+                <div class="overview-card">
+                    <i class='bx bx-money-withdraw'></i>
+                    <h3>Total Shippings</h3>
+                    <p id="shipping-value">0</p>
+                </div>
+            </div>
+        </div>
+
+
+
         <!-- Dashboard box -->
         <div class="row">
             <!-- Monthly Revenue Trend Section -->
@@ -116,42 +111,70 @@
     </section>
 
     <script>
+        console.log(@JSON($years));
         console.log(@JSON($salesRevenue));
         console.log(@JSON($topProducts));
-        console.log(@JSON($years));
         console.log(@JSON($salesRevenueSecondary));
-    
+        console.log(@JSON($salesRevenueQ));
+        console.log(@JSON($inventoryStock));
+        console.log(@JSON($topLowStockProducts));
+        console.log(@JSON($categoryStock));
+        console.log(@JSON($totalShipping));
+        console.log(@JSON($avgExpressStandard));
+        console.log(@JSON($topShippingLocations));
 
         // Predefined data from the backend
+        const years = @json($years);
         const salesRevenue = @json($salesRevenue);
         const topProducts = @json($topProducts);
-        const years = @json($years);
         const salesRevenueSecondary = @json($salesRevenueSecondary);
-  
+        const salesRevenueQuarterly = @json($salesRevenueQ);
+        const inventoryStock = @json($inventoryStock);
+        const topLowStockProducts = @json($topLowStockProducts);
+        const categoryStock = @json($categoryStock);
+        const totalShipping = @json($totalShipping);
+        const avgExpressStandard = @json($avgExpressStandard);
+        const topShippingLocations = @json($topShippingLocations);
 
         // Get references to DOM elements
         const yearSelect = document.getElementById('year-select');
         const revenueValue = document.getElementById('revenue-value');
-        const topProductsTableBody = document.querySelector('#top-products-table tbody');
+        const stockValue = document.getElementById('stock-value');
+        const shippingValue = document.getElementById('shipping-value');
 
         // Function to update dashboard based on selected year
         function updateDashboard(year) {
             // Update Revenue
-            const formattedRevenue = 'Rp. ' + new Intl.NumberFormat('id-ID').format(salesRevenue[year] || 0);
+            const revenueData = salesRevenue[year] || {
+                revenue: '0',
+                growth: 0
+            };
+            const formattedRevenue = 'Rp. ' + new Intl.NumberFormat('id-ID').format(revenueData.revenue);
+            const growthPercentage = revenueData.growth.toFixed(2) + '%';
+
             revenueValue.textContent = formattedRevenue;
+
+            // Update Growth Percentage
+            const growthValue = document.getElementById('growth-value');
+            growthValue.textContent = `${growthPercentage}`;
+            growthValue.style.color = revenueData.growth >= 0 ? 'green' : 'red';
 
             // Update Top Products
             const productsForYear = topProducts[year];
             createTopProductsChart(productsForYear);
 
-            createRevenueChart(year);
+            // Update Monthly Revenue Chart
+            createRevenueChartMonthly(year);
+
+            // Update Total Stock
+            const stockData = inventoryStock[year] || 0;
+            stockValue.textContent = new Intl.NumberFormat('id-ID').format(stockData);
+
+            // Update Total Shipping
+            const shippingData = totalShipping[year] || 0;
+            shippingValue.textContent = new Intl.NumberFormat('id-ID').format(shippingData);
+
         }
-
-
-        // Function to show Customer
-
-
-
         // Function to create Top Products Bar Chart
         function createTopProductsChart(products) {
             const productNames = products.map(product => product.nama_produk);
@@ -206,7 +229,7 @@
         }
 
         // Function to create revenue chart
-        function createRevenueChart(year) {
+        function createRevenueChartMonthly(year) {
             const monthNames = [
                 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
