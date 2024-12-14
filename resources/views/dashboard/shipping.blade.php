@@ -18,24 +18,27 @@
             <li><i class='bx bxs-category-alt'></i><a href="{{ url('/category') }}">Category</a></li>
             <li><i class='bx bxl-product-hunt'></i><a href="{{ url('/products') }}">Product</a></li>
             <li><i class='bx bxs-user-rectangle'></i><a href="{{ url('/customers') }}">Customers</a></li>
-            <li><i class='bx bxs-cart'></i><a href="{{ url('/supplier') }}">Supplier</a></li>
             <li><i class='bx bxs-package'></i><a href="{{ url('/orders') }}">Orders</a></li>
-            <li><i class='bx bxs-truck'></i><a href="{{ url('/shipping') }}">Shipping</a></li>
+            <li><i class='bx bxs-truck'></i><a href="{{ url('/shippings') }}">Shippings</a></li>
             <li><i class='bx bxs-bar-chart-alt-2'></i><a href="{{ url('/reports') }}">Reports</a></li>
         </div>
     </section>
 
     <section id="main-content">
-        <header>
-            <div class="search">
-                <i class='bx bx-search-alt-2'></i>
-                <input type="text" placeholder="Search">
-            </div>
-            <div class="user-profile">
-                <i class='bx bxs-bell'></i></i>&nbsp; &nbsp;
-                <img src="{{ asset('images/admin.png') }}" alt="User Profile">
-            </div>
-        </header>
+    <header>
+    <div class="search">
+        <i class='bx bx-search-alt-2'></i>
+        <input type="text" placeholder="Search">
+    </div>
+    <div class="user-profile">
+        <i class='bx bxs-bell'></i>
+        <img src="{{ asset('images/admin.png') }}" alt="User Profile">
+        <form method="POST" action="{{ route('logout') }}" class="logout-form">
+            @csrf
+            <button type="submit" class="btn-logout">Logout</button>
+        </form>
+    </div>
+    </header>
 
         <h1>Shipping Management</h1>
         <table class="table table-striped">
@@ -56,7 +59,7 @@
                     <td>123 Main St, Jakarta</td>
                     <td>
                         <button class="btn btn-primary">View</button>
-                        <button class="btn btn-warning">Update Status</button>
+                        <a href="{{ route('shipping.edit', $shipping->id) }}">Edit</a>
                     </td>
                 </tr>
                 <tr>

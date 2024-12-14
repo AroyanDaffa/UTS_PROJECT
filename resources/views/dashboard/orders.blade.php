@@ -18,24 +18,27 @@
             <li><i class='bx bxs-category-alt'></i><a href="{{ url('/category') }}">Category</a></li>
             <li><i class='bx bxl-product-hunt'></i><a href="{{ url('/products') }}">Product</a></li>
             <li><i class='bx bxs-user-rectangle'></i><a href="{{ url('/customers') }}">Customers</a></li>
-            <li><i class='bx bxs-cart'></i><a href="{{ url('/supplier') }}">Supplier</a></li>
             <li><i class='bx bxs-package'></i><a href="{{ url('/orders') }}">Orders</a></li>
-            <li><i class='bx bxs-truck'></i><a href="{{ url('/shipping') }}">Shipping</a></li>
+            <li><i class='bx bxs-truck'></i><a href="{{ url('/shippings') }}">Shippings</a></li>
             <li><i class='bx bxs-bar-chart-alt-2'></i><a href="reports.html">Reports</a></li>
         </div>
     </section>
 
     <section id="main-content">
-        <header>
-            <div class="search">
-                <i class='bx bx-search-alt-2'></i>
-                <input type="text" placeholder="Search">
-            </div>
-            <div class="user-profile">
-                <i class='bx bxs-bell'></i>&nbsp; &nbsp;
-                <img src="{{ asset('images/admin.png') }}" alt="User Profile">
-            </div>
-        </header>
+    <header>
+    <div class="search">
+        <i class='bx bx-search-alt-2'></i>
+        <input type="text" placeholder="Search">
+    </div>
+    <div class="user-profile">
+        <i class='bx bxs-bell'></i>
+        <img src="{{ asset('images/admin.png') }}" alt="User Profile">
+        <form method="POST" action="{{ route('logout') }}" class="logout-form">
+            @csrf
+            <button type="submit" class="btn-logout">Logout</button>
+        </form>
+    </div>
+    </header>
 
         <h1>Order Management</h1>
         <!-- Table to display orders -->
@@ -44,9 +47,9 @@
                 <tr>
                     <th>Order ID</th>
                     <th>Customer Name</th>
-                    <th>Status</th>
                     <th>Total</th>
                     <th>Date</th>
+                    <th>Destination Address</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -54,15 +57,12 @@
                 @foreach($orders as $order)
                 <tr>
                     <td>{{ $order->id }}</td>
-                    <td>{{ $order->customer_name }}</td>
-                    <td>{{ $order->status }}</td>
-                    <td>Rp. {{ number_format($order->total, 0, ',', '.') }}</td>
+                    <td>{{ $order->customer->customer_name }}</td>
+                    <td>{{ number_format($order->total, 0, ',', '.') }}</td>
                     <td>{{ $order->date }}</td>
+                    <td>{{ $order->destination_address }}</td>
                     <td>
-                        <!-- Tombol View -->
                         <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary">View</a>
-                        
-                        <!-- Tombol Update -->
                         <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-warning">Update</a>
                     </td>
                 </tr>

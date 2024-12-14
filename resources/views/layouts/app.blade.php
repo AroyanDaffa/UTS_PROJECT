@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style2.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>My Application</h1>
+            <h1>PT.BERANDA</h1>
         </header>
         
         <!-- Konten Halaman -->
@@ -19,7 +19,7 @@
         </main>
         
         <footer>
-            <p>&copy; 2024 My Application</p>
+            <p>&copy; PT.BERANDA 2024</p>
         </footer>
     </div>
 </body>

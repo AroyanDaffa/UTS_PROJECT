@@ -10,8 +10,10 @@ class Shipping extends Model
     use HasFactory;
 
     protected $fillable = [
-        'customer_name',
-        'shipping_status',
+        'order_id',
+        'no_resi',
+        'shipping_status', /* Pending, Shipped */
+        'shipping_current_location',
         'address',
     ];
 }

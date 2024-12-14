@@ -12,19 +12,21 @@
 header{
   position: relative;
   padding: 2em 0;
-  /* background-image: url(banner.jpg); */
-  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.1));
+  /* background-image: url(/public/images/images.png); */
+  background: #ffffff;
+  
 
 }
 .logo{
   font-size: 2em;
   font-weight: 600;
+  text-decoration: none;
 }
 
 .navbar{
   width: 100%;
   padding: 2rem 4rem;
-  height: 90px;
+  height: 100px;
   margin: auto;
   display: flex;
   align-items: center;
@@ -33,9 +35,10 @@ header{
   top: 0;
   position: fixed;
   transition: all 0.3s ease-in-out;
+  /* background-color: #0b3d91; */
 }
 .navbar.scrolled{
-  background-color: #d6d6d6;
+  background-color:#f1f1f1;
   box-shadow: rgba(0,0,0,0.35) 0px 5px 15px;
   padding: 0.8rem 4rem;
 }
@@ -54,7 +57,7 @@ header{
   transition: 0.3s;
   font-size: 16px;
   font-weight: 600;
-  color: #000;
+  color: #050505;
 }
 .nav_items li::before{
   content: '';
@@ -84,7 +87,7 @@ header{
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 2px;
-    background: black;
+    background: #0071c5;
     color: #fff;
     overflow: hidden;
     box-shadow: 0 0 0 0 transparent;
@@ -105,7 +108,7 @@ header{
   }
   
   .btnsignin:hover {
-    background: rgb(0, 0, 0);
+    background: #777;
     box-shadow: 0 0 30px 5px rgba(255, 255, 255, 0.815);
     -webkit-transition: all 0.2s ease-out;
     -moz-transition: all 0.2s ease-out;
@@ -169,7 +172,7 @@ header{
     font-weight: 600;
     letter-spacing: 2px;
     margin-right: 2px;
-    background: transparent;
+    background: #777;
     color: #fff;
     overflow: hidden;
     box-shadow: 0 0 0 0 transparent;
@@ -190,7 +193,7 @@ header{
   }
   
   .btnsignup:hover {
-    background: rgb(0, 0, 0);
+    background: #0071c5;
     box-shadow: 0 0 30px 5px rgba(255, 255, 255, 0.815);
     -webkit-transition: all 0.2s ease-out;
     -moz-transition: all 0.2s ease-out;
@@ -285,7 +288,7 @@ header{
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 2px;
-    background: transparent;
+    background: #777;
     color: #fff;
     overflow: hidden;
     box-shadow: 0 0 0 0 transparent;
@@ -305,7 +308,7 @@ header{
   }
   
   .btnmain2:hover {
-    background: rgb(0, 0, 0);
+    background: #0071c5;
     box-shadow: 0 0 30px 5px rgba(255, 255, 255, 0.815);
     -webkit-transition: all 0.2s ease-out;
     -moz-transition: all 0.2s ease-out;
@@ -369,7 +372,7 @@ header{
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 2px;
-    background: black;
+    background: #0071c5;
     color: #fff;
     overflow: hidden;
     box-shadow: 0 0 0 0 transparent;
@@ -389,7 +392,7 @@ header{
   }
   
   .btnmain1:hover {
-    background: rgb(0, 0, 0);
+    background: #777;
     box-shadow: 0 0 30px 5px rgba(255, 255, 255, 0.815);
     -webkit-transition: all 0.2s ease-out;
     -moz-transition: all 0.2s ease-out;
@@ -480,9 +483,10 @@ header{
 /* About Us */
 
 .us {
-  padding: 8% 0 5% 0;
-  width: 82%;
+  padding: 8% 0 10% 0;
+  width: 92%;
   margin: auto;
+  /* background: #e8e7e7; */
 }
 
 .head{
@@ -490,6 +494,7 @@ header{
   grid-template-columns: 1fr 1fr;
   gap: 0em 6em;
   align-items: center;
+  margin-top: -2em; /* Move the entire grid up */
 }
 
 .head .sub_heading,
@@ -514,13 +519,13 @@ header{
   text-align: justify;
   color: #777;
   align-self: start; /* Posisikan lebih ke atas */
-  margin-top: -1em;
+  margin-top: 0.5em; /* Adjust to reduce spacing */
 }
 
 @media screen and (max-width: 768px) {
   .head {
       grid-template-columns: 1fr;
-      gap: 1em;
+      gap: -1em;
   }
 
   .head .sub_heading,
@@ -572,7 +577,7 @@ header{
 /* Service */
 
 .head_1{
-  width: 70%;
+  width: 100%;
   text-align: center;
   margin: auto;
 }
@@ -582,51 +587,7 @@ header{
 .head_1 .heading{
   padding: 15px 0;
 }
-.Service_box {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 50px;
-  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.1));
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-.Service_box li{
-  list-style: none;
-}
-.left_box p{
-  font-size: 14px;
-  padding: 15px 0;
-  line-height: 1.5;
-  color: #777;
-}
-.left_box li{
-  padding: 15px 0;
-}
-.left_box li i{
-  color: #fff;
-  padding: 1px;
-  background: black;
-  border-radius: 50%;
-  margin-right: 12px;
-}
-.left_box button{
-  margin-top: 2em;
-}
-.right_box li{
-  display: flex;
-  align-items: flex-start;
-  gap: 1em;
-  margin: 2% 0;
-}
-.right_box h4{
-  font-size: 19px;
-}
-.right_box p{
-  font-size: 15px;
-  padding-top: 12px;
-  color: #777;
-}
+
 
 .product{
   position: relative;
@@ -645,7 +606,8 @@ header{
 .product-container{
   padding: 0 10vw;
   display: flex;
-  overflow-x: auto;
+  overflow-x: hidden;
+  flex-wrap: nowrap;
   scroll-behavior: smooth;
 }
 
@@ -845,7 +807,7 @@ header{
 }
 
 .box_1 {
-  background-color: #ffffff;
+  background-color: #4682b4;
   width: 250px;
   padding: 30px;
   border-radius: 10px;
@@ -869,7 +831,7 @@ header{
 
 .box_1 h4 {
   font-size: 18px;
-  color: #333;
+  color: #ffffff;
   font-weight: 600;
   text-transform: capitalize;
   margin: 0;
@@ -906,137 +868,6 @@ header{
       max-width: 400px;
   }
 }
-
-/* ___________contact */
-/* Gaya untuk kontainer utama */
-.contact {
-  background: #fff; /* Warna latar belakang */
-  padding: 5% 0;
-  width: 100%;
-  border-radius: 10px; /* Membuat sudut yang lebih halus */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Efek bayangan */
-}
-
-/* Kontainer untuk info dan form kontak */
-.contact_container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 2rem;
-}
-
-/* Gaya untuk bagian info kontak */
-.contact_info {
-  flex: 1;
-  margin-right: 2rem;
-  color: #333;
-}
-
-.contact_info h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: black; /* Warna teks heading */
-  font-weight: 700;
-}
-
-.contact_info p {
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-}
-
-.contact_details {
-  margin-top: 1rem;
-}
-
-.detail_item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.detail_item i {
-  font-size: 1.5rem;
-  margin-right: 1rem;
-  color: black; /* Warna ikon */
-}
-
-.detail_item span {
-  font-size: 1rem;
-}
-
-/* Gaya untuk form kontak */
-.contact_form {
-  flex: 1;
-  background: #fff;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.contact_form form {
-  display: flex;
-  flex-direction: column;
-}
-
-.form_group {
-  margin-bottom: 1.5rem;
-}
-
-.form_group label {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-  display: block;
-}
-
-.form_group input,
-.form_group textarea {
-  width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
-  color: #333;
-  outline: none;
-  transition: border 0.3s ease;
-}
-
-.form_group input:focus,
-.form_group textarea:focus {
-  border-color: #0071c5; /* Warna border saat fokus */
-}
-
-textarea {
-  height: 120px;
-  resize: none; /* Menghilangkan resize */
-}
-
-/* Gaya untuk tombol kirim */
-button[type="submit"] {
-  padding: 0.8rem 1.5rem;
-  border: none;
-  background: black;
-  color: #fff;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button[type="submit"]:hover {
-  background: black; /* Warna saat hover */
-}
-
-/* Responsif untuk perangkat kecil */
-@media (max-width: 768px) {
-  .contact_container {
-      flex-direction: column;
-  }
-
-  .contact_info,
-  .contact_form {
-      margin: 1rem 0;
-  }
-}
-
 
 /* ___________footer */
 /* Container utama untuk footer */
@@ -1106,7 +937,7 @@ button[type="submit"]:hover {
 .footer_bottom {
   text-align: center;
   padding: 1rem;
-  background-color: #333;
+  background-color: #0071c5;
   color: #fff;
   font-size: 0.9rem;
 }

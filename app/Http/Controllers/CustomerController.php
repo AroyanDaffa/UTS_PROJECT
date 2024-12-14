@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -18,43 +20,54 @@ class CustomerController extends Controller
         return view('dashboard.customers.create');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:customers',
-            'orders' => 'nullable|integer', 
-            'last_order' => 'nullable|date',
-        ]);
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'user_id' => 'required|integer',
+    //     ]);
 
-        Customer::create($request->all());
+    //     $user = User::where('id', $request['user_id'])->firstOrFail();
+    //     $userId = $user->id;
+    //     $userEmail = $user->email;
+    //     $userName = $user->name;
 
-        return redirect()->route('customers.index')->with('success', 'Customer successfully created.');
-    }
+    //     $allUserOrders = Order::where('user_id', $userId)->count(); //Consider to return all orders instead of just counting it
+    //     $latestOrder = Order::where('user_id', $userId)->orderBy('date', 'desc')->first()->date;
 
-    public function edit(Customer $customer)
-    {
-        return view('dashboard.customers.edit', compact('customer'));
-    }
+    //     Customer::create([
+    //         'user_id' => $userId,
+    //         'customer_name' => $userName,
+    //         'customer_email' => $userEmail,
+    //         'orders' => $allUserOrders,
+    //         'last_order' => $latestOrder
+    //     ]);
 
-    public function update(Request $request, Customer $customer)
-    {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:customers,email,' . $customer->id,
-            'orders' => 'required|integer',
-            'last_order' => 'nullable|date',
-        ]);
+    //     return redirect()->route('customers.index')->with('success', 'Customer successfully created.');
+    // }
 
-        $customer->update($request->all());
+    // public function edit(Customer $customer)
+    // {
+    //     return view('dashboard.customers.create', compact('customer'));
+    // }
 
-        return redirect()->route('customers.index')->with('success', 'Customer successfully updated.');
-    }
+    // public function update(Request $request, Customer $customer)
+    // {
+    //     $request->validate([
+    //         'name' => 'required',
+    //         'email' => 'required|email|unique:customers,email,' . $customer->id,
+    //         'orders' => 'required|integer',
+    //         'last_order' => 'nullable|date',
+    //     ]);
 
-    public function destroy(Customer $customer)
-    {
-        $customer->delete();
+    //     $customer->update($request->all());
 
-        return redirect()->route('customers.index')->with('success', 'Customer successfully deleted.');
-    }
+    //     return redirect()->route('customers.index')->with('success', 'Customer successfully updated.');
+    // }
+
+    // public function destroy(Customer $customer)
+    // {
+    //     $customer->delete();
+
+    //     return redirect()->route('customers.index')->with('success', 'Customer successfully deleted.');
+    // }
 }
