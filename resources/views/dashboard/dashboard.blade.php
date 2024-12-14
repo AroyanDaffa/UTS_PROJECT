@@ -8,19 +8,6 @@
     <link href="{{ asset('css/style3.css') }}" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <style>
-        .year-filter {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .year-filter select {
-            margin-left: 10px;
-            padding: 5px;
-        }
-    </style>
 </head>
 
 <body>
@@ -39,7 +26,6 @@
             <li><i class='bx bxs-user-rectangle'></i><a href="{{ url('/customers') }}">Customers</a></li>
             <li><i class='bx bxs-package'></i><a href="{{ url('/orders') }}">Orders</a></li>
             <li><i class='bx bxs-truck'></i><a href="{{ url('/shippings') }}">Shipping</a></li> <!-- Diperbaiki -->
-            <!-- <li><i class='bx bxs-bar-chart-alt-2'></i><a href="{{ url('/reports') }}">Reports</a></li> -->
         </div>
     </section>
 
@@ -47,10 +33,12 @@
     <section id="main-content">
         <!-- Header Section -->
     <header>
+
     <div class="search">
         <i class='bx bx-search-alt-2'></i>
         <input type="text" placeholder="Search">
     </div>
+
     <div class="user-profile">
         <i class='bx bxs-bell'></i>
         <img src="{{ asset('images/admin.png') }}" alt="User Profile">
@@ -61,26 +49,51 @@
     </div>
     </header>
 
-        <!-- Year Filter Section -->
-        <div class="year-filter">
-            <label for="year-select">Select Year:</label>
-            <select id="year-select">
-                @foreach($years as $year)
+        <!-- Dashboard Overview Section -->
+    <div class="dashboard-overview">
+    <h1>Welcome, Admin</h1>
+    
+    <!-- Year Filter Section -->
+    <div class="year-filter">
+        <label for="year-select">Select Year:</label>
+        <select id="year-select">
+            @foreach($years as $year)
                 <option value="{{ $year }}">
                     {{ $year }}
                 </option>
-                @endforeach
-            </select>
-        </div>
+            @endforeach
+        </select>
+    </div>
 
-        <!-- Dashboard Overview Section -->
-        <h1>Welcome, Admin</h1>
-        <div class="dashboard-overview">
-            <div class="overview-card">
-                <h3>Total Revenue</h3>
-                <p id="revenue-value">0</p>
-            </div>
+    <!-- Overview Cards Section -->
+    <div class="overview-cards">
+        <div class="overview-card">
+        <i class='bx bx-money-withdraw' ></i>
+            <h3>Total Revenue</h3>
+            <p id="revenue-value">0</p>
         </div>
+        <div class="overview-card">
+        <i class='bx bxs-group' ></i>
+            <h3>Total Customer</h3>
+            <p>{{ $customerCount }}</p>
+        </div>
+        <div class="overview-card">
+        <i class='bx bxs-basket'></i>
+            <h3>Total Products</h3>
+            <p>{{ $productsCount }}</p>
+        </div>
+        <div class="overview-card">
+        <i class='bx bx-current-location'></i>
+            <h3>Total Location</h3>
+            <p>{{ $locationCount }}</p>
+        </div>
+        
+    </div>
+</div>
+
+       
+         
+        <!-- Dashboard box -->
         <div class="row">
             <!-- Monthly Revenue Trend Section -->
             <div class="col-md-6 mb-4">
@@ -97,6 +110,8 @@
                     <canvas id="top-products-chart"></canvas>
                 </div>
             </div>
+
+
         </div>
     </section>
 
@@ -105,12 +120,14 @@
         console.log(@JSON($topProducts));
         console.log(@JSON($years));
         console.log(@JSON($salesRevenueSecondary));
+    
 
         // Predefined data from the backend
         const salesRevenue = @json($salesRevenue);
         const topProducts = @json($topProducts);
         const years = @json($years);
         const salesRevenueSecondary = @json($salesRevenueSecondary);
+  
 
         // Get references to DOM elements
         const yearSelect = document.getElementById('year-select');
@@ -130,6 +147,11 @@
             createRevenueChart(year);
         }
 
+
+        // Function to show Customer
+
+
+
         // Function to create Top Products Bar Chart
         function createTopProductsChart(products) {
             const productNames = products.map(product => product.nama_produk);
@@ -140,7 +162,7 @@
                 datasets: [{
                     label: 'Order Frequency',
                     data: orderFrequencies,
-                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    backgroundColor: ' #3b82f6',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1
                 }]
@@ -200,7 +222,7 @@
                         const monthKey = String(index + 1).padStart(2, '0');
                         return parseFloat(monthlyData[monthKey] || 0);
                     }),
-                    borderColor: 'rgb(75, 192, 192)',
+                    borderColor: ' #3b82f6',
                     tension: 0.1,
                     fill: false
                 }]
@@ -257,29 +279,6 @@
         });
     </script>
     <style>
-        .chart-container {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .recent-orders {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .recent-orders th,
-        .recent-orders td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .recent-orders th {
-            background-color: #f8f9fa;
-        }
     </style>
 </body>
 

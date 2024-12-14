@@ -50,6 +50,37 @@ class OLAPController extends Controller
         sort($this->years);
     }
 
+    // Function to count customers
+    public function getCustomerCount()
+    {
+        // Assuming the 'customers' table exists and contains a column for customer data
+        $customerCount = DB::connection($this->connection)
+            ->table('customers') // Change 'customers' to the actual table name if needed
+            ->count(); // Count the number of rows in the table (customers)
+
+        return $customerCount;
+    }
+
+    public function getProductsCount()
+    {
+        // Assuming the 'customers' table exists and contains a column for customer data
+        $productsCount = DB::connection($this->connection)
+            ->table('products') // Change 'customers' to the actual table name if needed
+            ->count(); // Count the number of rows in the table (customers)
+
+        return $productsCount;
+    }
+
+    public function getLocationCount()
+    {
+        // Assuming the 'customers' table exists and contains a column for customer data
+        $locationCount = DB::connection($this->connection)
+            ->table('locations') // Change 'customers' to the actual table name if needed
+            ->count(); // Count the number of rows in the table (customers)
+
+        return $locationCount;
+    }
+
     public function dashboardData()
     {
         $years = $this->years;
@@ -57,6 +88,11 @@ class OLAPController extends Controller
         $salesRevenue = [];
         $topProducts = [];
         $salesRevenueSecondary = [];
+        $customerCount = $this->getCustomerCount(); // Get customer count
+        $productsCount = $this->getproductsCount(); // Get customer count
+        $locationCount = $this->getLocationCount();
+
+
 
         foreach ($years as $year) {
             $yearlyRevenue = DB::connection($this->connection)
@@ -95,6 +131,18 @@ class OLAPController extends Controller
             }
 
             $salesRevenueSecondary[$year] = $monthlyRevenue;
+
+            foreach ($years as $year) {
+                // Change the query to calculate total orders instead of revenue
+                $yearlyOrders = DB::connection($this->connection)
+                    ->table('fakta_penjualan')
+                    ->whereRaw('LEFT(sk_waktu, 4) = ?', [$year])
+                    ->selectRaw('COUNT(*) as total_orders') // Count the number of rows for each year
+                    ->value('total_orders');
+            
+                $totalOrders[$year] = $yearlyOrders ?: 0; // Store the total orders for each year
+            }
+            
         }
 
         return view('dashboard.dashboard', compact(
@@ -102,6 +150,11 @@ class OLAPController extends Controller
             'salesRevenue',
             'topProducts',
             'salesRevenueSecondary',
+            'customerCount', // Include customer count in the view
+            'productsCount',
+            'locationCount',
+            'totalOrders'
+
             //Jumlah Stock => faktapenjualan -> diambil setiap product stocknya (ga boleh double) dijumlahin 
             //TODO:
             //Top 5 Kota =>  faktashipping count sk_destinasi / tujuan sama terus diorder by
@@ -150,3 +203,4 @@ class OLAPController extends Controller
         return response()->json($salesRevenue);
     }
 }
+
