@@ -46,7 +46,7 @@ body {
 /* Enhanced Sidebar Styling */
 #menu {
     background: var(--primary-color);
-    width: 300px;
+    width: 200px;
     height: 100vh;
     position: fixed;
     top: 0;
@@ -56,14 +56,24 @@ body {
 }
 
 #menu .logo {
-    display: flex;
-    align-items: center;
     color: var(--text-light);
-    padding: var(--spacing-xl) 0 0 var(--spacing-xl);
+    padding: var(--spacing-xl) 0 0 var(--spacing-md);
+}
+
+#menu .items {
+    margin-top: var(--shadow-sm);
+}
+
+
+/* Logo Container for Icon and Text */
+
+#menu .logo h2 {
+    font-weight: 600;
+    font-size: x-large;
 }
 
 #menu .logo img {
-    width: 70px;
+    width: 30px; /* Adjust logo size for smaller sidebar */
     margin-right: var(--spacing-md);
     transition: transform 0.3s ease;
 }
@@ -101,18 +111,18 @@ body {
 }
 
 #menu .items li:hover {
-    background: var(--secondary-color);
+    background: #374151; /* Slightly lighter on hover */
     cursor: pointer;
 }
 
 #menu .items li i {
     color: var(--text-secondary);
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
+    width: 25px; /* Adjust icon size */
+    height: 25px;
+    line-height: 25px;
     text-align: center;
-    font-size: 14px;
-    margin: 0 var(--spacing-md) 0 var(--spacing-xl);
+    font-size: 16px; /* Adjust font size for smaller icons */
+    margin: 0 var(--spacing-sm) 0 var(--spacing-md);
     transition: all 0.3s ease;
 }
 
@@ -131,10 +141,10 @@ body {
 
 /* Enhanced Main Content Styling */
 #main-content {
-    margin-left: 300px;
+    margin-left: 200px; /* Adjust for smaller sidebar */
     padding: var(--spacing-xl);
     min-height: 100vh;
-    width: calc(100% - 300px);
+    width: calc(100% - 200px); /* Adjust for smaller sidebar */
     transition: all 0.3s ease;
     background-color: var(--bg-light);
 }
@@ -176,6 +186,50 @@ header {
     transform: scale(1.1);
 }
 
+/* Search Bar Container */
+.search {
+    display: flex;                /* Align the icon and input horizontally */
+    align-items: center;          /* Vertically center the content */
+    background-color: #ffffff;    /* White background */
+    border: 2px solid #d1d5db;    /* Subtle border */
+    border-radius: 30px;          /* Rounded corners */
+    padding: 5px 15px;            /* Inner padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+    transition: box-shadow 0.3s ease-in-out;
+    max-width: 400px;             /* Max width for larger screens */
+    width: 100%;                  /* Full width on smaller screens */
+}
+
+/* Search Icon */
+.search i {
+    font-size: 20px;              /* Adjust icon size */
+    color: #9ca3af;               /* Light gray color */
+    margin-right: 10px;           /* Spacing between icon and input */
+    transition: color 0.3s ease;  /* Smooth color transition */
+}
+
+.search i:hover {
+    color: #3b82f6;               /* Accent color on hover */
+}
+
+/* Search Input Field */
+.search input {
+    border: none;                 /* Remove border */
+    outline: none;                /* Remove outline */
+    font-size: 16px;              /* Font size */
+    color: #333333;               /* Text color */
+    flex: 1;                      /* Input takes up remaining space */
+    background: transparent;      /* Transparent background */
+    padding: 5px 0;               /* Top and bottom padding */
+}
+
+/* Focus State */
+.search:focus-within {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Deeper shadow when focused */
+    border-color: #3b82f6;         /* Change border color */
+}
+
+
 /* Enhanced Logout Button */
 .btn-logout {
     background-color: var(--danger-color);
@@ -196,40 +250,58 @@ header {
     box-shadow: var(--shadow-md);
 }
 
+
+.sticky-header {
+    position: sticky; /* Make the header stick to the top */
+    top: 0; /* Stick it to the top of the viewport */
+    z-index: 1000; /* Ensure it stays above other content */
+    background-color: #ffffff; /* Background color for better visibility */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+    padding: 10px 20px; /* Add some padding */
+    display: flex; /* Keep the layout as flex for alignment */
+    justify-content: space-between; /* Spread items across the header */
+    align-items: center; /* Center items vertically */
+    width: 100%; /* Ensure it spans the full width */
+}
+
+
 /* Enhanced Dashboard Cards */
 
 
 .dashboard-overview {
-    justify-content: space-around;
-    margin-bottom: 20px;
-    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-xl);
+    background-color: var(--bg-white);
     border-radius: 10px;
-    padding: 1.5rem;
-    background-color: #ffffff;
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-lg);
 }
 
 .dashboard-overview h1 {
-    margin-bottom: 20px;
+    font-size: 2rem;
     font-weight: bold;
-    
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-lg);
 }
 .overview-card {
-    width: 500px; /* Sedikit diperbesar untuk lebih proporsional */
     background-color: #ffffff;
     padding: 20px;
-    margin-top: 10px;
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Bayangan lebih halus */
+    box-shadow: var(--shadow-sm);
     border-radius: 10px;
-    transition: transform 0.3s;
-    border: 1px solid #e5e7eb; /* Tambahkan border untuk batas yang jelas */
-    position: relative; /* To position the icon */
+    transition: transform 0.3s ease;
+    border: 1px solid #e5e7eb;
+    position: relative;
+}
+.overview-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+    width: 100%;
+    max-width: 1200px;
 }
 
-.overview-cards {
-    display: flex;
-    gap: 10px; /* Add space between the cards */
-}
 .overview-card i {
     top: 50%; /* Vertically center the icon */
     left: 20px;
@@ -317,41 +389,44 @@ header {
     transform: translateX(5px);
 }
 
-.chart-container {
-    background: white;
-    border-radius: 1rem;
-    padding: 1.5rem;
- 
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+
+
+/* Chart */
+
+.chart-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: var(--spacing-lg); /* Increase gap between boxes */
+    padding: var(--shadow-md);
+    max-width: 1400px; /* Allow wider container */
+    margin: 0 auto;
 }
 
+.chart-container {
+    background-color: var(--bg-white);
+    padding: var(--spacing-lg); /* Increase padding for space */
+    border-radius: 10px;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px; /* Set minimum height */
+    width: 100%; /* Use full width */
+}
+
+
 .chart-container h2 {
-    color: var(--text-primary);
-    font-size: 1.25rem;
+    font-size: 1.5rem; /* Increase font size for titles */
     font-weight: 600;
-    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
     text-align: center;
 }
 
+
 .chart-container:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.recent-orders {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.recent-orders th,
-.recent-orders td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.recent-orders th {
-    background-color: #f8f9fa;
 }
 
 

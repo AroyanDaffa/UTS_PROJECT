@@ -255,7 +255,7 @@ class OLAPController extends Controller
         //     'salesRevenue' => $salesRevenue,
         //     // 'topProducts' => $topProducts,
         //     // 'salesRevenueSecondary' => $salesRevenueSecondary,
-        //     // 'salesRevenueQ' => $salesRevenueQ,
+        //     'salesRevenueQ' => $salesRevenueQ,
         //     'inventoryStock' => $inventoryStock,
         //     // 'topLowStockProducts' => $topLowStockProducts,
         //     // 'categoryStock' => $categoryStock,
