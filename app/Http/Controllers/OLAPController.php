@@ -55,6 +55,15 @@ class OLAPController extends Controller
         sort($this->years);
     }
 
+    public function getCustomerCount()
+    {
+        $customerCount = DB::connection($this->connection)
+        ->table('customers')
+        ->count();
+
+        return $customerCount;
+    }
+
     public function dashboardData()
     {
         $years = $this->years;
@@ -69,6 +78,7 @@ class OLAPController extends Controller
         $totalShipping = []; // Total shipping yang terjadi di setiap tahun
         $avgExpressStandard = []; // Average pengiriman metode Express dan Standard di setiap tahun
         $topShippingLocations = []; // Top 5 Kota-Kabupaten yang paling banyak terjadi shipping
+        $customerCount = $this->getCustomerCount(); // Get customer count
 
         sort($years);
 
@@ -290,7 +300,8 @@ class OLAPController extends Controller
             'categoryStock',
             'totalShipping',
             'avgExpressStandard',
-            'topShippingLocations'
+            'topShippingLocations',
+            'customerCount' // Include customer count in the view
         ));
         // return response()->json([
         //     // 'years' => $years,

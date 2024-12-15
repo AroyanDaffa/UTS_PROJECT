@@ -49,7 +49,7 @@
                     </select>
                 </div>
                 <i class='bx bxs-bell'></i>
-                <img src="{{ asset('images/admin.png') }}" alt="User Profile">
+                <img src="{{ asset('images/Foto diri.png') }}" alt="User Profile">
                 <form method="POST" action="{{ route('logout') }}" class="logout-form">
                     @csrf
                     <button type="submit" class="btn-logout">Logout</button>
@@ -60,6 +60,7 @@
         <!-- Dashboard Overview Section -->
         <div class="dashboard-overview">
             <h1>Welcome, Admin</h1>
+            <h4>To the best dashboard ever</h4>
             <!-- Overview Cards Section -->
             <div class="overview-cards">
                 <div class="overview-card">
@@ -80,6 +81,11 @@
                     <p id="shipping-value">0</p>
                     <p id="growth-value-shipping" style="font-size: 0.9rem; color: #555;">Growth: 0%</p>
                 </div>
+                <div class="overview-card">
+                    <i class='bx bxs-group'></i>
+                    <h3>Total Customers</h3>
+                    <p>{{ $customerCount }}</p>
+                </div>
             </div>
         </div>
 
@@ -87,32 +93,38 @@
 
         <!-- Dashboard box -->
         <!-- Remove the Bootstrap classes -->
-        <!-- Dashboard Box -->
-        <div class="chart-box">
-            <div class="chart-container">
-                <h2>Monthly Revenue Trend</h2>
-                <canvas id="revenue-chart"></canvas>
+         <!-- Dashboard Box -->
+        <div class="dashboard-sections">
+            <div class="section">
+                <div class="chart-container">
+                    <h2>Monthly Revenue Trend</h2>
+                    <canvas id="revenue-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>Top 5 Products</h2>
+                    <canvas id="top-products-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>Quarterly Revenue Trend</h2>
+                    <canvas id="quarterly-sales-chart"></canvas>
+                </div>
             </div>
-            <div class="chart-container">
-                <h2>Top 5 Products</h2>
-                <canvas id="top-products-chart"></canvas>
+
+            <div class="section">
+                <div class="chart-container">
+                    <h2>Low Stock Products</h2>
+                    <canvas id="low-stock-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>Category Stock Distribution</h2>
+                    <canvas id="category-stock-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>Category Stock Distribution</h2>
+                    <canvas id="inventory-stock-chart"></canvas>
+                </div>
             </div>
-            <div class="chart-container">
-                <h2>Quarterly Revenue</h2>
-                <canvas id="quarterly-sales-chart"></canvas>
-            </div>
-            <div class="chart-container">
-                <h2>Low Stock Products</h2>
-                <canvas id="low-stock-chart"></canvas>
-            </div>
-            <div class="chart-container">
-                <h2>Category Stock Distribution</h2>
-                <canvas id="category-stock-chart"></canvas>
-            </div>
-            <div class="chart-container">
-                <h2>Category Stock Distribution</h2>
-                <canvas id="inventory-stock-chart"></canvas>
-            </div>
+        </div>
             <div class="chart-container">
                 <h2>Shipping Duration Comparison</h2>
                 <canvas id="shipping-duration-chart"></canvas>
@@ -231,7 +243,7 @@
                 datasets: [{
                     label: 'Order Frequency',
                     data: orderFrequencies,
-                    backgroundColor: ' #3b82f6',
+                    backgroundColor: ' rgba(75, 192, 192, 0.7)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1
                 }]
@@ -291,7 +303,7 @@
                         const monthKey = String(index + 1).padStart(2, '0');
                         return parseFloat(monthlyData[monthKey] || 0);
                     }),
-                    borderColor: ' #3b82f6',
+                    borderColor: 'rgba(255, 99, 132, 0.7)',
                     tension: 0.1,
                     fill: false
                 }]

@@ -142,7 +142,7 @@ body {
 /* Enhanced Main Content Styling */
 #main-content {
     margin-left: 200px; /* Adjust for smaller sidebar */
-    padding: var(--spacing-xl);
+    padding: var(--spacing-md);
     min-height: 100vh;
     width: calc(100% - 200px); /* Adjust for smaller sidebar */
     transition: all 0.3s ease;
@@ -177,7 +177,7 @@ header {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: fill;
     border: 2px solid var(--accent-color);
     transition: transform 0.3s ease;
 }
@@ -272,10 +272,14 @@ header {
     display: flex;
     flex-direction: column;
     padding: var(--spacing-xl);
-    background-color: var(--bg-white);
+    background-image:url('/images/bg22.avif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
     border-radius: 10px;
     box-shadow: var(--shadow-md);
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: 10px;
 }
 
 .dashboard-overview h1 {
@@ -286,7 +290,7 @@ header {
 }
 .overview-card {
     background-color: #ffffff;
-    padding: 20px;
+    padding: 10px;
     text-align: center;
     box-shadow: var(--shadow-sm);
     border-radius: 10px;
@@ -300,16 +304,27 @@ header {
     gap: var(--spacing-lg);
     width: 100%;
     max-width: 1200px;
+    padding-top: var(--spacing-md); 
 }
 
+/* Different colors for each card */
+
+
 .overview-card i {
-    top: 50%; /* Vertically center the icon */
-    left: 20px;
-    font-size: 50px; /* Adjust size as needed */
-    color: black; /* Change icon color if needed */
+    display: inline-flex;          /* Flex untuk memposisikan ikon di tengah */
+    justify-content: center;       /* Tengah horizontal */
+    align-items: center;           /* Tengah vertikal */
+    width: 50px;                   /* Lebar kotak */
+    height: 50px;                  /* Tinggi kotak */
+    background-color: #f9f9f9;     /* Warna background kotak */
+    /* border: 2px solid #d1d5db;     Border abu-abu */
+    border-radius: 12px;           /* Sudut membulat */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow kotak */
+    transition: transform 0.3s ease; /* Efek transisi */
+    font-size: 2.5rem;  
 }
+
 .year-filter {
-    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -339,15 +354,16 @@ header {
 
 .overview-card h3 {
     font-size: 20px;
+    margin-top: var(--spacing-md);
     margin-bottom: var(--spacing-md);
-    color: var(--text-primary);
+    color: rgb(0, 0, 0);
     text-align: center;
 }
 
 .overview-card p {
     font-size: 28px;
     font-weight: 600;
-    color: var(--accent-color);
+    color: rgb(0, 0, 0);
     text-align: center;
 }
 
