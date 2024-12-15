@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -11,7 +12,10 @@ class CategoryController extends Controller
     public function index()
     {
         // Ambil semua kategori dari database
-        $categories = Category::all();
+        //TODO: integrate oltp with olap in the future
+        // $categories = Category::all();
+        $categories = DB::connection('olap')->table('categories')->get();
+
         // Kirim data kategori ke view
         return view('dashboard.category', compact('categories'));
     }

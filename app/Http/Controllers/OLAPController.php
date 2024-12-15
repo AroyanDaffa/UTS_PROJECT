@@ -21,7 +21,7 @@ class OLAPController extends Controller
             ->select('SELECT * FROM fakta_inventory');
 
         $this->shippingFacts = DB::connection($this->connection)
-            ->select('SELECT * FROM fakta_shipping');
+            ->select('SELECT * FROM fakta_pengiriman');
 
         $this->extractYears();
     }
@@ -151,7 +151,30 @@ class OLAPController extends Controller
                 ->selectRaw('SUM(fi.stock) as total_stock')
                 ->value('total_stock');
 
-            $inventoryStock[$year] = $yearlyInventoryStock ?: 0;
+            $inventoryGrowth = 0;
+            if ($index > 0) {
+                $previousYearInventoryStock = DB::connection($this->connection)
+                    ->table('fakta_inventory as fi')
+                    ->whereRaw('LEFT(fi.sk_waktu, 4) = ?', [$years[$index - 1]])
+                    ->whereRaw('fi.sk_waktu = (
+                            SELECT MAX(sub.sk_waktu)
+                            FROM fakta_inventory as sub
+                            WHERE sub.sk_produk = fi.sk_produk
+                            AND LEFT(sub.sk_waktu, 4) = ?
+                        )', [$years[$index - 1]])
+                    ->selectRaw('SUM(fi.stock) as total_stock')
+                    ->value('total_stock') ?: 0;
+
+                if ($previousYearInventoryStock > 0) {
+                    $inventoryGrowth = (($yearlyInventoryStock - $previousYearInventoryStock) / $previousYearInventoryStock) * 100;
+                }
+            }
+
+            $inventoryStock[$year] = [
+                'stock' => $yearlyInventoryStock ?: 0,
+                'growth' => round($inventoryGrowth, 2)
+            ];
+
 
             $yearlyTopLowStockProducts = DB::connection($this->connection)
                 ->table('fakta_inventory as fi')
@@ -173,33 +196,52 @@ class OLAPController extends Controller
             $yearlyCategoryStock = DB::connection($this->connection)
                 ->table('fakta_inventory as fi')
                 ->join('dim_products as dp', 'fi.sk_produk', '=', 'dp.sk_produk') // Join with the dim_products table
+                ->join('dim_kategori as dk', 'dp.nama_kategori', '=', 'dk.name') // Join with dim_kategori
                 ->whereRaw('LEFT(fi.sk_waktu, 4) = ?', [$year]) // Filter by year
                 ->whereRaw('fi.sk_waktu = (SELECT MAX(sk_waktu) FROM fakta_inventory WHERE LEFT(sk_waktu, 4) = ? AND sk_produk = fi.sk_produk)', [$year]) // Get the latest stock per product
                 ->select(
-                    'dp.id_kategori', // Category ID
-                    'dp.nama_kategori', // Category name
+                    'dk.sk_kategori', // Category ID
+                    DB::raw('MIN(dp.nama_kategori) as nama_kategori'), // Ensure distinct category names
                     DB::raw('SUM(fi.stock) as total_stock') // Sum of stocks for each category
                 )
-                ->groupBy('dp.id_kategori', 'dp.nama_kategori') // Group by category ID and name
+                ->groupBy('dk.sk_kategori') // Group by category ID
                 ->orderBy('total_stock', 'desc') // Optional: order by total stock descending
                 ->get();
+
 
             $categoryStock[$year] = $yearlyCategoryStock ?: 0;
 
             // Shipping Facts
             $yearlyTotalShipping = DB::connection($this->connection)
-                ->table('fakta_shipping')
+                ->table('fakta_pengiriman')
                 ->whereRaw('LEFT(sk_waktu, 4) = ?', [$year])
                 ->selectRaw('COUNT(*) as total_shipping')
                 ->value('total_shipping');
 
-            $totalShipping[$year] = $yearlyTotalShipping ?: 0;
+            $shippingGrowth = 0;
+            if ($index > 0) {
+                $previousYearTotalShipping = DB::connection($this->connection)
+                    ->table('fakta_pengiriman')
+                    ->whereRaw('LEFT(sk_waktu, 4) = ?', [$years[$index - 1]])
+                    ->selectRaw('COUNT(*) as total_shipping')
+                    ->value('total_shipping') ?: 0;
+
+                if ($previousYearTotalShipping > 0) {
+                    $shippingGrowth = (($yearlyTotalShipping - $previousYearTotalShipping) / $previousYearTotalShipping) * 100;
+                }
+            }
+
+            $totalShipping[$year] = [
+                'shipping' => $yearlyTotalShipping ?: 0,
+                'growth' => round($shippingGrowth, 2)
+            ];
+
 
             for ($month = 1; $month <= 12; $month++) {
                 $monthStr = str_pad($month, 2, '0', STR_PAD_LEFT);
 
                 $monthlyAvgShippingDuration = DB::connection($this->connection)
-                    ->table('fakta_shipping')
+                    ->table('fakta_pengiriman')
                     ->whereRaw('LEFT(sk_waktu, 4) = ? AND LEFT(RIGHT(sk_waktu, 4), 2) = ?', [$year, $monthStr])
                     ->selectRaw('shipping_method, 
                         AVG(DATEDIFF(tanggal_selesai, tanggal)) as avg_shipping_days')
@@ -224,7 +266,7 @@ class OLAPController extends Controller
             }
 
             $topShippingLocations[$year] = DB::connection($this->connection)
-                ->table('fakta_shipping as fs')
+                ->table('fakta_pengiriman as fs')
                 ->join('dim_lokasi as dl', 'fs.sk_lokasi', '=', 'dl.sk_lokasi')
                 ->whereRaw('LEFT(fs.sk_waktu, 4) = ?', [$year])
                 ->select(
@@ -255,7 +297,7 @@ class OLAPController extends Controller
         //     'salesRevenue' => $salesRevenue,
         //     // 'topProducts' => $topProducts,
         //     // 'salesRevenueSecondary' => $salesRevenueSecondary,
-        //     'salesRevenueQ' => $salesRevenueQ,
+        //     // 'salesRevenueQ' => $salesRevenueQ,
         //     'inventoryStock' => $inventoryStock,
         //     // 'topLowStockProducts' => $topLowStockProducts,
         //     // 'categoryStock' => $categoryStock,

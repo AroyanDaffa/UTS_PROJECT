@@ -13,22 +13,29 @@
     <table class="table">
         <thead>
             <tr>
+            <tr>
+                <th>No Resi</th>
                 <th>Order ID</th>
-                <th>No. Resi</th>
-                <th>Shipping Status</th>
-                <th>Current Location</th>
+                <th>Customer ID</th>
+                <th>Product Name</th>
+                <th>Shipping Method</th>
                 <th>Address</th>
+                <th>Tanggal</th>
+                <th>Tanggal Selesai</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($shippings as $shipping)
             <tr>
-                <td>{{ $shipping->order_id }}</td>
                 <td>{{ $shipping->no_resi }}</td>
-                <td>{{ $shipping->shipping_status }}</td>
-                <td>{{ $shipping->shipping_current_location }}</td>
+                <td>{{ $shipping->order_id }}</td>
+                <td>{{ $shipping->customer_id }}</td>
+                <td>{{ $shipping->product_name }}</td>
+                <td>{{ $shipping->shipping_method }}</td>
                 <td>{{ $shipping->address }}</td>
+                <td>{{ $shipping->tanggal }}</td>
+                <td>{{ $shipping->tanggal_selesai }}</td>
                 <td>
                     <a href="{{ route('shippings.show', $shipping->id) }}" class="btn btn-info">View</a>
                     <a href="{{ route('shippings.edit', $shipping->id) }}" class="btn btn-warning">Edit</a>

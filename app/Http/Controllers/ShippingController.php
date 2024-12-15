@@ -6,12 +6,15 @@ use App\Helpers\ResiHelper;
 use App\Models\Order;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ShippingController extends Controller
 {
     public function index()
     {
-        $shippings = Shipping::all();
+        //TODO: integrate oltp with olap
+        // $shippings = Shipping::all();
+        $shippings = DB::connection('olap')->table('fix_shipping_updated')->get();
         return view('shippings.index', compact('shippings'));
     }
 

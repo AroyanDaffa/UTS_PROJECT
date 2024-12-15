@@ -36,7 +36,7 @@
                 <i class='bx bx-search-alt-2'></i>
                 <input type="text" placeholder="Search">
             </div>
-            
+
             <div class="user-profile">
                 <div class="year-filter">
                     <label for="year-select">Select Year:</label>
@@ -72,11 +72,13 @@
                     <i class='bx bxs-box'></i>
                     <h3>Total Stocks</h3>
                     <p id="stock-value">0</p>
+                    <p id="growth-value-stock" style="font-size: 0.9rem; color: #555;">Growth: 0%</p>
                 </div>
                 <div class="overview-card">
-                    <i class='bx bxs-truck' ></i>
+                    <i class='bx bxs-truck'></i>
                     <h3>Total Shippings</h3>
                     <p id="shipping-value">0</p>
+                    <p id="growth-value-shipping" style="font-size: 0.9rem; color: #555;">Growth: 0%</p>
                 </div>
             </div>
         </div>
@@ -85,8 +87,8 @@
 
         <!-- Dashboard box -->
         <!-- Remove the Bootstrap classes -->
-         <!-- Dashboard Box -->
-          <div class="chart-box">
+        <!-- Dashboard Box -->
+        <div class="chart-box">
             <div class="chart-container">
                 <h2>Monthly Revenue Trend</h2>
                 <canvas id="revenue-chart"></canvas>
@@ -119,11 +121,11 @@
                 <h2>Top Shipping Locations</h2>
                 <canvas id="top-locations-chart"></canvas>
             </div>
-          </div>
+        </div>
 
 
-        
-        
+
+
     </section>
 
     <script>
@@ -167,10 +169,7 @@
             };
             const formattedRevenue = 'Rp. ' + new Intl.NumberFormat('id-ID').format(revenueData.revenue);
             const growthPercentage = revenueData.growth.toFixed(2) + '%';
-
             revenueValue.textContent = formattedRevenue;
-
-            // Update Growth Percentage
             const growthValue = document.getElementById('growth-value');
             growthValue.textContent = `${growthPercentage}`;
             growthValue.style.color = revenueData.growth >= 0 ? 'green' : 'red';
@@ -183,12 +182,30 @@
             createRevenueChartMonthly(year);
 
             // Update Total Stock
-            const stockData = inventoryStock[year] || 0;
-            stockValue.textContent = new Intl.NumberFormat('id-ID').format(stockData);
+            const stockData = inventoryStock[year] || {
+                stock: '0',
+                growth: 0
+            };
+            const growthPercentageStock = stockData.growth.toFixed(2) + '%';
+            stockValue.textContent = new Intl.NumberFormat('id-ID').format(stockData.stock);
+
+            const growthValueStock = document.getElementById('growth-value-stock');
+            growthValueStock.textContent = `${growthPercentageStock}`;
+            growthValueStock.style.color = stockData.growth >= 0 ? 'green' : 'red';
 
             // Update Total Shipping
-            const shippingData = totalShipping[year] || 0;
-            shippingValue.textContent = new Intl.NumberFormat('id-ID').format(shippingData);
+            // Update Total Shipping
+            const shippingData = totalShipping[year] || {
+                shipping: 0,
+                growth: 0
+            };
+            const formattedShipping = new Intl.NumberFormat('id-ID').format(shippingData.shipping);
+            shippingValue.textContent = formattedShipping;
+
+            const growthPercentageShipping = shippingData.growth.toFixed(2) + '%';
+            const growthValueShipping = document.getElementById('growth-value-shipping');
+            growthValueShipping.textContent = `${growthPercentageShipping}`;
+            growthValueShipping.style.color = shippingData.growth >= 0 ? 'green' : 'red';
 
             createQuarterlySalesChart(salesRevenueQuarterly, year);
 
@@ -201,7 +218,7 @@
             createShippingDurationChart(avgExpressStandard, year);
 
             createTopLocationsChart(topShippingLocations, year);
-    
+
 
         }
         // Function to create Top Products Bar Chart
@@ -321,10 +338,10 @@
         }
 
         // Quarterly Chart
-        function createQuarterlySalesChart(salesRevenueQ, year){
-            const quarters = [1, 2, 3, 4];    // Define the quarters
+        function createQuarterlySalesChart(salesRevenueQ, year) {
+            const quarters = [1, 2, 3, 4]; // Define the quarters
             const revenueDataQuarter = salesRevenueQ[year]?.map(item => parseFloat(item.total_revenue)) || [0, 0, 0, 0];
-            
+
             const chartData = {
                 labels: quarters.map(q => `Q${q}`),
                 datasets: [{
@@ -426,7 +443,7 @@
                             },
                             title: {
                                 display: true,
-                                 text: 'Stock Units'
+                                text: 'Stock Units'
                             }
                         }
                     }
@@ -447,7 +464,7 @@
                 datasets: [{
                     label: 'Stock Level',
                     data: stockValues,
-                    backgroundColor: '#ef4444',  // Red color for warning indication
+                    backgroundColor: '#ef4444', // Red color for warning indication
                     borderColor: 'rgba(239, 68, 68, 1)',
                     borderWidth: 1
                 }]
@@ -458,7 +475,7 @@
             const ctx = document.getElementById('low-stock-chart').getContext('2d');
             window.lowStockChart = new Chart(ctx, {
                 type: 'bar',
-                
+
                 data: chartData,
                 options: {
                     responsive: true,
@@ -480,23 +497,23 @@
                             title: {
                                 display: true,
 
-                            ticks: {
-                                maxRotation: 45,
-                                minRotation: 45,
-                                font: {
-                                    size: 11
+                                ticks: {
+                                    maxRotation: 45,
+                                    minRotation: 45,
+                                    font: {
+                                        size: 11
+                                    }
                                 }
-                            }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Stock Units'
                             },
-                            ticks: {
-                                callback: function(value) {
-                                    return value.toLocaleString('id-ID');
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Stock Units'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return value.toLocaleString('id-ID');
                                     }
                                 }
                             }
@@ -504,10 +521,10 @@
                     },
                     layout: {
                         padding: {
-                            bottom: 25  // Add padding for rotated labels
-                            }
+                            bottom: 25 // Add padding for rotated labels
                         }
                     }
+                }
             });
         }
 
@@ -519,10 +536,10 @@
                 const r = Math.floor(Math.random() * 255);
                 const g = Math.floor(Math.random() * 255);
                 const b = Math.floor(Math.random() * 255);
-                colors.push(`rgba(${r}, ${g}, ${b}, 0.7)`);  // Semi-transparent
-                }
-                return colors;
+                colors.push(`rgba(${r}, ${g}, ${b}, 0.7)`); // Semi-transparent
             }
+            return colors;
+        }
 
         function createCategoryStockChart(categoryStock, year) {
             // Get data for selected year
@@ -540,46 +557,45 @@
                 datasets: [{
                     data: stockValues,
                     backgroundColor: backgroundColors,
-                        borderColor: borderColors,
-                        borderWidth: 1
-                    }]
-                };
-                if (window.categoryStockChart instanceof Chart) {
-                    window.categoryStockChart.destroy();
-                }
-                const ctx = document.getElementById('category-stock-chart').getContext('2d');
-                window.categoryStockChart = new Chart(ctx, {
-                    type: 'pie',
-                    data: chartData,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: `Stock Distribution by Category ${year}`
-                            },
-                            legend: {
-                                position: 'right',
-                                labels: {
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                        const value = context.raw;
-                                        const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
-                                        return `${context.label}: ${value.toLocaleString('id-ID')} units (${percentage}%)`;
-                                    }
+                    borderColor: borderColors,
+                    borderWidth: 1
+                }]
+            };
+            if (window.categoryStockChart instanceof Chart) {
+                window.categoryStockChart.destroy();
+            }
+            const ctx = document.getElementById('category-stock-chart').getContext('2d');
+            window.categoryStockChart = new Chart(ctx, {
+                type: 'pie',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `Stock Distribution by Category ${year}`
+                        },
+                        legend: {
+                            position: 'right',
+                            labels: {}
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const value = context.raw;
+                                    const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                    return `${context.label}: ${value.toLocaleString('id-ID')} units (${percentage}%)`;
                                 }
                             }
                         }
                     }
-                });
-            }
+                }
+            });
+        }
 
 
-        
+
         // Function to create shipping
 
         function createShippingDurationChart(avgExpressStandard, year) {
@@ -592,28 +608,30 @@
             const standardData = [];
             for (let i = 1; i <= 12; i++) {
                 const monthStr = String(i).padStart(2, '0');
-                const monthData = avgExpressStandard[year][monthStr];expressData.push(monthData.express);
+                const monthData = avgExpressStandard[year][monthStr];
+                expressData.push(monthData.express);
                 standardData.push(monthData.standard);
             }
             const chartData = {
                 labels: months,
                 datasets: [{
-                    label: 'Express Shipping',
-                    data: expressData,
-                    borderColor: '#3b82f6',
-                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                    borderWidth: 2,
-                    tension: 0.4,
-                },
-                {
-                    label: 'Standard Shipping',
-                    data: standardData,
-                    borderColor: '#16a34a',
-                    backgroundColor: 'rgba(22, 163, 74, 0.1)',
-                    borderWidth: 2,
-                    tension: 0.4,
-                    fill: true
-                }]
+                        label: 'Express Shipping',
+                        data: expressData,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                    },
+                    {
+                        label: 'Standard Shipping',
+                        data: standardData,
+                        borderColor: '#16a34a',
+                        backgroundColor: 'rgba(22, 163, 74, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
             };
             // Destroy existing chart if it exists
             if (window.shippingDurationChart instanceof Chart) {
@@ -661,13 +679,15 @@
                 }
             });
         }
-       
+
         // top shipping location\
         function createTopLocationsChart(topShippingLocations, year) {
             // Get data for selected year
             const locations = topShippingLocations[year] || [];
             // Extract location names and shipping counts
-            const locationNames = locations.map(item => item.nama_lokasi);const shippingCounts = locations.map(item => item.shipping_count);const chartData = {
+            const locationNames = locations.map(item => item.nama_lokasi);
+            const shippingCounts = locations.map(item => item.shipping_count);
+            const chartData = {
                 labels: locationNames,
                 datasets: [{
                     label: 'Number of Shipments',
@@ -683,11 +703,11 @@
             const ctx = document.getElementById('top-locations-chart').getContext('2d');
             window.topLocationsChart = new Chart(ctx, {
                 type: 'bar',
-                indexAxis: 'y',  // Makes the bars horizontal
+                indexAxis: 'y', // Makes the bars horizontal
                 data: chartData,
                 options: {
                     responsive: true,
-               
+
                     plugins: {
                         title: {
                             display: true,
@@ -714,34 +734,23 @@
                                 autoSkip: false, // Prevent skipping location names
                                 maxRotation: 45, // Rotate labels for readability
                                 minRotation: 45
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Number of Shipments' // Y-axis title
                             },
-                            ticks: {
-                                callback: function(value) {
-                                    return value.toLocaleString('id-ID');
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Number of Shipments' // Y-axis title
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return value.toLocaleString('id-ID');
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-        });
-    }
-    
-        
-
-
-
-
-
-
-
-
-            
+            });
+        }
 
 
 
@@ -756,7 +765,18 @@
 
 
 
-                            
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

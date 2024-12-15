@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
+
 <body>
     <section id="menu">
         <div class="logo">
@@ -24,20 +26,20 @@
     </section>
 
     <section id="main-content">
-    <header>
-    <div class="search">
-        <i class='bx bx-search-alt-2'></i>
-        <input type="text" placeholder="Search">
-    </div>
-    <div class="user-profile">
-        <i class='bx bxs-bell'></i>
-        <img src="{{ asset('images/admin.png') }}" alt="User Profile">
-        <form method="POST" action="{{ route('logout') }}" class="logout-form">
-            @csrf
-            <button type="submit" class="btn-logout">Logout</button>
-        </form>
-    </div>
-    </header>
+        <header>
+            <div class="search">
+                <i class='bx bx-search-alt-2'></i>
+                <input type="text" placeholder="Search">
+            </div>
+            <div class="user-profile">
+                <i class='bx bxs-bell'></i>
+                <img src="{{ asset('images/admin.png') }}" alt="User Profile">
+                <form method="POST" action="{{ route('logout') }}" class="logout-form">
+                    @csrf
+                    <button type="submit" class="btn-logout">Logout</button>
+                </form>
+            </div>
+        </header>
 
         <h1>Order Management</h1>
         <!-- Table to display orders -->
@@ -56,10 +58,10 @@
                 @foreach($orders as $order)
                 <tr>
                     <td>{{ $order->id }}</td>
-                    <td>{{ $order->customer->customer_name }}</td>
-                    <td>{{ number_format($order->total, 0, ',', '.') }}</td>
-                    <td>{{ $order->date }}</td>
-                    <td>{{ $order->destination_address }}</td>
+                    <td>{{ $order->customer_name }}</td>
+                    <td>{{ $order->total }}</td>
+                    <td>{{ $order->tanggal }}</td>
+                    <td>{{ $order->address }}</td>
                     <td>
                         <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary">View</a>
                         <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-warning">Update</a>
@@ -70,4 +72,5 @@
         </table>
     </section>
 </body>
+
 </html>

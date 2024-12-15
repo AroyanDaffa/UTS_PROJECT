@@ -11,13 +11,21 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::with('customer')->get();
+        //TODO: integrate with oltp and olap
+        // $orders = Order::with('customer')->get();
+        $orders = DB::connection('olap')
+            ->table('orders')
+            ->join('customers', 'orders.customer_id', '=', 'customers.id')
+            ->select('orders.*', 'customers.customer_name as customer_name')
+            ->get();
+
         return view('dashboard.orders', compact('orders'));
     }
 

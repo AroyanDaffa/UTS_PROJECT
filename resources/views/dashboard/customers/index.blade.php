@@ -66,7 +66,7 @@
                         <td>{{ $customer->customer_name}}</td>
                         <td>{{ $customer->customer_email}}</td>
                         <td>{{ $customer->orders }}</td>
-                        <td>{{ optional($customer->lastOrder)->created_at ?? 'No orders' }}</td>
+                        <td>{{ $customer->last_order ?? 'No orders' }}</td>
 
                         <td>
                             <a href="{{ route('customers.edit', $customer->id) }}" class="btn btn-warning">Edit</a>

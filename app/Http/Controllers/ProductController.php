@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Product;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
@@ -13,7 +13,9 @@ class ProductController extends Controller
     // Display a listing of the products.
     public function index()
     {
-        $products = Product::all();
+        //TODO: in the future integrate oltp with olap
+        // $products = Product::all();
+        $products = DB::connection('olap')->table('products')->get();
         return view('dashboard.products.index', compact('products'));
     }
 
@@ -70,7 +72,7 @@ class ProductController extends Controller
         return view('products.edit', compact('product'));
     }
 
-    
+
 
     // Update the specified product in storage.
     public function update(Request $request, $id)
@@ -115,6 +117,4 @@ class ProductController extends Controller
 
         return view('user.user', compact('products'));
     }
-
-
 }

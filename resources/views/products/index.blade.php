@@ -28,7 +28,7 @@
                 <td>{{ $product->id }}</td>
                 <td>{{ $product->name }}</td>
                 <td>{{ $product->price }}</td>
-                <td>{{ $product->category_id }}</td>
+                <td>{{ $product->category_name }}</td>
                 <td>{{ $product->stock }}</td>
                 <td>
                     <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Edit</a>

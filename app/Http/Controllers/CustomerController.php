@@ -6,12 +6,16 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::all();
+        //TODO: integrate oltp with olap
+        // $customers = Customer::all();
+        $customers = DB::connection('olap')->table('customers')->get();
+
         return view('dashboard.customers.index', compact('customers'));
     }
 
